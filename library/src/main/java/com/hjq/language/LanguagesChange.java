@@ -3,6 +3,7 @@ package com.hjq.language;
 import android.content.ComponentCallbacks;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Build;
 
 import java.util.Locale;
@@ -16,7 +17,16 @@ import java.util.Locale;
 final class LanguagesChange implements ComponentCallbacks {
 
     /** 系统语种 */
-    private static Locale sSystemLanguage = Locale.getDefault();
+    private static Locale sSystemLanguage;
+
+    static {
+        // 获取当前系统的语种
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            sSystemLanguage = Resources.getSystem().getConfiguration().getLocales().get(0);
+        } else  {
+            sSystemLanguage = Resources.getSystem().getConfiguration().locale;
+        }
+    }
 
     /**
      * 获取系统的语种

@@ -1,9 +1,11 @@
-# 国际化适配框架
+# 国际化框架
+
+![](MultiLanguages.gif)
 
 #### 集成步骤
 
     dependencies {
-        implementation 'com.hjq:language:2.0'
+        implementation 'com.hjq:language:3.0'
     }
 
 #### 初始化框架

@@ -17,11 +17,11 @@ public class LanguageActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_language);
+
         findViewById(R.id.btn_language_auto).setOnClickListener(this);
         findViewById(R.id.btn_language_cn).setOnClickListener(this);
         findViewById(R.id.btn_language_tw).setOnClickListener(this);
         findViewById(R.id.btn_language_en).setOnClickListener(this);
-
 
         ((TextView) findViewById(R.id.tv_language_system)).setText(LanguagesManager.getLanguageString(this, LanguagesManager.getSystemLanguage(), R.string.current_language));
 

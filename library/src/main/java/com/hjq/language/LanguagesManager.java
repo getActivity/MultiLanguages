@@ -95,8 +95,8 @@ public final class LanguagesManager {
     /**
      * 获取某个语种下的 String
      */
-    public static String getLanguageString(Context context, Locale locale, int stringId) {
-        return getLanguageResources(context, locale).getString(stringId);
+    public static String getLanguageString(Context context, Locale locale, int id) {
+        return getLanguageResources(context, locale).getString(id);
     }
 
     /**

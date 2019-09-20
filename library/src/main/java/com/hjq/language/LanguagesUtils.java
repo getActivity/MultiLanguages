@@ -19,7 +19,7 @@ final class LanguagesUtils {
      * 判断上下文的语种和某个语种是否相同
      */
     static boolean equalsLanguages(Context context, Locale locale) {
-        Configuration config = new Configuration(context.getResources().getConfiguration());
+        Configuration config = context.getResources().getConfiguration();
 
         // API 版本兼容
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -51,12 +51,13 @@ final class LanguagesUtils {
      * 获取某个语种下的 Resources 对象
      */
     static Resources getLanguageResources(Context context, Locale locale) {
-        Configuration config = new Configuration(context.getResources().getConfiguration());
+        Configuration config = new Configuration();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             config.setLocale(locale);
+            return context.createConfigurationContext(config).getResources();
         } else {
             config.locale = locale;
+            return new Resources(context.getAssets(), context.getResources().getDisplayMetrics(), config);
         }
-        return new Resources(context.getAssets(), context.getResources().getDisplayMetrics(), config);
     }
 }
