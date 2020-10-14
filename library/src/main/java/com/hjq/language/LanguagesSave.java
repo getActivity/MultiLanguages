@@ -9,7 +9,7 @@ import java.util.Locale;
  *    author : Android 轮子哥
  *    github : https://github.com/getActivity/MultiLanguages
  *    time   : 2019/05/03
- *    desc   : 国际化保存
+ *    desc   : 配置保存类
  */
 final class LanguagesSave {
 

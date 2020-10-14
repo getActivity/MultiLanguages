@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
+import android.os.LocaleList;
 
 import java.util.Locale;
 
@@ -37,12 +38,18 @@ final class LanguagesUtils {
         Configuration config = new Configuration(resources.getConfiguration());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            config.setLocale(locale);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                LocaleList localeList = new LocaleList(locale);
+                LocaleList.setDefault(localeList);
+                config.setLocales(localeList);
+            } else {
+                config.setLocale(locale);
+            }
             context = context.createConfigurationContext(config);
         } else {
             config.locale = locale;
+            resources.updateConfiguration(config, resources.getDisplayMetrics());
         }
-        resources.updateConfiguration(config, resources.getDisplayMetrics());
         Locale.setDefault(locale);
         return context;
     }
@@ -53,7 +60,13 @@ final class LanguagesUtils {
     static Resources getLanguageResources(Context context, Locale locale) {
         Configuration config = new Configuration();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            config.setLocale(locale);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                LocaleList localeList = new LocaleList(locale);
+                LocaleList.setDefault(localeList);
+                config.setLocales(localeList);
+            } else {
+                config.setLocale(locale);
+            }
             return context.createConfigurationContext(config).getResources();
         } else {
             config.locale = locale;
