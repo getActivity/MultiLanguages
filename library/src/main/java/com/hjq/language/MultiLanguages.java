@@ -10,67 +10,106 @@ import java.util.Locale;
  *    author : Android 轮子哥
  *    github : https://github.com/getActivity/MultiLanguages
  *    time   : 2019/05/03
- *    desc   : 国际化管理
+ *    desc   : 多语种适配
  */
 public final class MultiLanguages {
 
+    /** Application 对象 */
+    private static Application sApplication;
+
+    /** 语种变化监听对象 */
+    private static OnLanguageListener sLanguageListener;
+
     /**
-     * 初始化国际化框架
+     * 初始化多语种框架
      */
     public static void init(Application application) {
-        LanguagesChange.register(application);
+        init(application, true);
+    }
+
+    public static void init(Application application, boolean inject) {
+        sApplication = application;
+        LanguagesObserver.register(application);
+        if (inject) {
+            ActivityLanguages.inject(application);
+        }
     }
 
     /**
      * 在上下文的子类中重写 attachBaseContext 方法（用于更新 Context 的语种）
      */
     public static Context attach(Context context) {
-        if (!LanguagesUtils.equalsLanguages(context, getAppLanguage(context))) {
-            return LanguagesUtils.updateLanguages(context, getAppLanguage(context));
+        if (!LanguagesTools.getLocale(context).equals(LanguagesConfig.getAppLanguage(context))) {
+            return LanguagesTools.attachLanguages(context, LanguagesConfig.getAppLanguage(context));
         }
         return context;
     }
 
     /**
+     * 更新 Context 的语种
+     */
+    public static void updateAppLanguage(Context context) {
+        updateAppLanguage(context.getResources());
+    }
+
+    /**
+     * 更新 Resources 的语种
+     */
+    public static void updateAppLanguage(Resources resources) {
+        if (!LanguagesTools.getLocale(resources.getConfiguration()).equals(LanguagesConfig.getAppLanguage(sApplication))) {
+            LanguagesTools.updateLanguages(resources, LanguagesConfig.getAppLanguage(sApplication));
+        }
+    }
+
+    /**
      * 获取 App 的语种
      */
-    public static Locale getAppLanguage(Context context) {
-        return LanguagesSave.getAppLanguage(context);
+    public static Locale getAppLanguage() {
+        return LanguagesConfig.getAppLanguage(sApplication);
     }
 
     /**
      * 设置 App 的语种
      */
-    public static boolean setAppLanguage(Context context, Locale locale) {
-        LanguagesSave.saveAppLanguage(context, locale);
-
-        if (!LanguagesUtils.equalsLanguages(context, locale)) {
-            // 更新当前和全局上下文的语种
-            LanguagesUtils.updateLanguages(context, locale);
-            if (context != context.getApplicationContext()) {
-                LanguagesUtils.updateLanguages(context.getApplicationContext(), locale);
-            }
-            // 需要重启
-            return true;
+    public static boolean setAppLanguage(Context context, Locale newLocale) {
+        if (LanguagesTools.getLocale(context).equals(newLocale)) {
+            // 不需要重启
+            return false;
         }
-        // 不需要重启
-        return false;
+
+        Locale oldLocale = LanguagesTools.getLocale(context);
+        // 更新 Activity 的语种
+        LanguagesTools.updateLanguages(context.getResources(), newLocale);
+        if (context != sApplication) {
+            // 更新 Application 的语种
+            LanguagesTools.updateLanguages(sApplication.getResources(), newLocale);
+        }
+        LanguagesConfig.setAppLanguage(context, newLocale);
+        if (sLanguageListener != null) {
+            sLanguageListener.onAppLocaleChange(oldLocale, newLocale);
+        }
+        // 需要重启
+        return true;
     }
 
     /**
      * 获取系统的语种
      */
     public static Locale getSystemLanguage() {
-        return LanguagesChange.getSystemLanguage();
+        return LanguagesObserver.getSystemLanguage();
     }
 
     /**
      * 将 App 语种设置为系统语种
      */
     public static boolean setSystemLanguage(Context context) {
-        LanguagesSave.clearLanguage(context);
-        if (!LanguagesUtils.equalsLanguages(context, getSystemLanguage())) {
-            LanguagesUtils.updateLanguages(context, getSystemLanguage());
+        LanguagesConfig.clearLanguage(context);
+        if (!LanguagesTools.getLocale(context).equals(getSystemLanguage())) {
+            LanguagesTools.updateLanguages(context.getResources(), getSystemLanguage());
+            if (context != sApplication) {
+                // 更新 Application 的语种
+                LanguagesTools.updateLanguages(sApplication.getResources(), getSystemLanguage());
+            }
             // 需要重启
             return true;
         }
@@ -103,13 +142,24 @@ public final class MultiLanguages {
      * 获取某个语种下的 Resources 对象
      */
     public static Resources getLanguageResources(Context context, Locale locale) {
-        return LanguagesUtils.getLanguageResources(context, locale);
+        return LanguagesTools.getLanguageResources(context, locale);
+    }
+
+    /**
+     * 设置语种变化监听器
+     */
+    public static void setOnLanguageListener(OnLanguageListener listener) {
+        sLanguageListener = listener;
+    }
+
+    static OnLanguageListener getOnLanguagesListener() {
+        return sLanguageListener;
     }
 
     /**
      * 设置保存的 SharedPreferences 文件名
      */
     public static void setSharedPreferencesName(String name) {
-        LanguagesSave.setSharedPreferencesName(name);
+        LanguagesConfig.setSharedPreferencesName(name);
     }
 }

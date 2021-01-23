@@ -16,6 +16,18 @@
         app:title="https://github.com/getActivity/MultiLanguages"
         app:titleSize="13sp" />
 
+    <com.hjq.language.demo.LanguagesWebView
+        android:id="@+id/wv_language_web"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_marginTop="20dp"
+        android:layout_weight="1" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#dcdcdc" />
+
     <LinearLayout
         android:id="@+id/rg_language_languages"
         android:layout_width="wrap_content"
@@ -52,39 +64,59 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="40dp"
-        android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
 
         <TextView
-            android:text="当前App语种："
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="当前 Activity 语种：" />
 
         <TextView
+            android:id="@+id/tv_language_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
-            android:text="@string/current_language"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:text="@string/current_language" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="40dp"
-        android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal">
 
         <TextView
-            android:text="当前系统语种："
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="当前 Application 语种：" />
+
+        <TextView
+            android:id="@+id/tv_language_application"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="当前 System 语种：" />
 
         <TextView
             android:id="@+id/tv_language_system"
-            android:layout_marginLeft="40dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp" />
     </LinearLayout>
 
 </LinearLayout>

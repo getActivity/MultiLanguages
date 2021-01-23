@@ -3,38 +3,45 @@ package com.hjq.language.demo;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.hjq.language.MultiLanguages;
-import com.hjq.toast.ToastUtils;
 
 import java.util.Locale;
 
-public class LanguageActivity extends BaseActivity
+/**
+ *    author : Android 轮子哥
+ *    github : https://github.com/getActivity/MultiLanguages
+ *    time   : 2019/08/10
+ *    desc   : Demo 演示
+ */
+public final class LanguageActivity extends BaseActivity
         implements View.OnClickListener {
+
+    private WebView mWebView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_language);
 
+        mWebView = findViewById(R.id.wv_language_web);
+        mWebView.setWebViewClient(new WebViewClient());
+        mWebView.setWebChromeClient(new WebChromeClient());
+        mWebView.loadUrl("https://developer.android.google.cn/index.html");
+
+        //((TextView) findViewById(R.id.tv_language_activity)).setText(this.getResources().getString(R.string.current_language));
+        ((TextView) findViewById(R.id.tv_language_application)).setText(getApplication().getResources().getString(R.string.current_language));
+        ((TextView) findViewById(R.id.tv_language_system)).setText(MultiLanguages.getLanguageString(this, MultiLanguages.getSystemLanguage(), R.string.current_language));
+
         findViewById(R.id.btn_language_auto).setOnClickListener(this);
         findViewById(R.id.btn_language_cn).setOnClickListener(this);
         findViewById(R.id.btn_language_tw).setOnClickListener(this);
         findViewById(R.id.btn_language_en).setOnClickListener(this);
-
-        ((TextView) findViewById(R.id.tv_language_system)).setText(MultiLanguages.getLanguageString(this, MultiLanguages.getSystemLanguage(), R.string.current_language));
-
-        Locale locale = MultiLanguages.getAppLanguage(this);
-        if (MultiLanguages.equalsCountry(locale, Locale.CHINA)) {
-            ToastUtils.show("简体");
-        } else if (MultiLanguages.equalsCountry(locale, Locale.TAIWAN)) {
-            ToastUtils.show("繁体");
-        } else if (MultiLanguages.equalsLanguage(locale, Locale.ENGLISH)) {
-            ToastUtils.show("英语");
-        } else {
-            ToastUtils.show("未知语种");
-        }
     }
 
     /**
@@ -43,27 +50,21 @@ public class LanguageActivity extends BaseActivity
     @Override
     public void onClick(View v) {
         // 是否需要重启
-        boolean restart;
-        switch (v.getId()) {
+        boolean restart = false;
+
+        int viewId = v.getId();
+        if (viewId == R.id.btn_language_auto) {
             // 跟随系统
-            case R.id.btn_language_auto:
-                restart = MultiLanguages.setSystemLanguage(this);
-                break;
+            restart = MultiLanguages.setSystemLanguage(this);
+        } else if (viewId == R.id.btn_language_cn) {
             // 简体中文
-            case R.id.btn_language_cn:
-                restart = MultiLanguages.setAppLanguage(this, Locale.CHINA);
-                break;
+            restart = MultiLanguages.setAppLanguage(this, Locale.CHINA);
+        } else if (viewId == R.id.btn_language_tw) {
             // 繁体中文
-            case R.id.btn_language_tw:
-                restart = MultiLanguages.setAppLanguage(this, Locale.TAIWAN);
-                break;
+            restart = MultiLanguages.setAppLanguage(this, Locale.TAIWAN);
+        } else if (viewId == R.id.btn_language_en) {
             // 英语
-            case R.id.btn_language_en:
-                restart = MultiLanguages.setAppLanguage(this, Locale.ENGLISH);
-                break;
-            default:
-                restart = false;
-                break;
+            restart = MultiLanguages.setAppLanguage(this, Locale.ENGLISH);
         }
 
         if (restart) {
@@ -79,5 +80,37 @@ public class LanguageActivity extends BaseActivity
             overridePendingTransition(R.anim.activity_alpha_in, R.anim.activity_alpha_out);
             finish();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mWebView.onResume();
+        mWebView.resumeTimers();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mWebView.onPause();
+        mWebView.pauseTimers();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //清除历史记录
+        mWebView.clearHistory();
+        //停止加载
+        mWebView.stopLoading();
+        //加载一个空白页
+        mWebView.loadUrl("about:blank");
+        mWebView.setWebChromeClient(null);
+        mWebView.setWebViewClient(null);
+        //移除WebView所有的View对象
+        mWebView.removeAllViews();
+        //销毁此的WebView的内部状态
+        mWebView.destroy();
+        ((ViewGroup) mWebView.getParent()).removeView(mWebView);
     }
 }

@@ -6,8 +6,8 @@ android {
 
     defaultConfig {
         minSdkVersion 14
-        versionCode 50
-        versionName "5.0"
+        versionCode 60
+        versionName "6.0"
     }
 }
 
@@ -15,8 +15,8 @@ publish {
     userOrg = 'getactivity'
     groupId = 'com.hjq'
     artifactId = 'language'
-    version = '5.0'
-    description = 'Android Multi Languages Adaptation Framework'
+    publishVersion = '6.0'
+    desc = 'Android Multi Languages Adaptation Framework'
     website = "https://github.com/getActivity/MultiLanguages"
 }
 
