@@ -1,4 +1,4 @@
-# 多语种适配框架
+# 语种切换框架
 
 * 码云地址：[Gitee](https://gitee.com/getActivity/MultiLanguages)
 
@@ -10,8 +10,8 @@
 
 ```groovy
 dependencies {
-    // 国际化框架：https://github.com/getActivity/MultiLanguages
-    implementation 'com.hjq:language:6.0'
+    // 语种切换框架：https://github.com/getActivity/MultiLanguages
+    implementation 'com.hjq:language:6.5'
 }
 ```
 
@@ -25,11 +25,10 @@ public final class XxxApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        // 初始化多语种框架（自动适配第三方库中 Activity 语种）
+        // 初始化语种切换框架（自动适配第三方库中 Activity 语种）
         MultiLanguages.init(this);
     }
 }
-
 ```
 
 * 重写 Application 的 attachBaseContext 方法
@@ -37,7 +36,7 @@ public final class XxxApplication extends Application {
 ```java
 @Override
 protected void attachBaseContext(Context base) {
-    // 国际化适配（绑定语种）
+    // 绑定语种
     super.attachBaseContext(MultiLanguages.attach(base));
 }
 ```
@@ -47,7 +46,7 @@ protected void attachBaseContext(Context base) {
 ```java
 @Override
 protected void attachBaseContext(Context newBase) {
-    // 国际化适配（绑定语种）
+    // 绑定语种
     super.attachBaseContext(MultiLanguages.attach(newBase));
 }
 ```
@@ -71,6 +70,8 @@ MultiLanguages.getAppLanguage();
 MultiLanguages.setSystemLanguage(Context context);
 // 获取系统的语种
 MultiLanguages.getSystemLanguage();
+// 是否跟随系统的语种
+MultiLanguages.isSystemLanguage();
 
 // 对比两个语言是否是同一个语种（比如：中文的简体和繁体，英语的美式和英式）
 MultiLanguages.equalsLanguage(Locale locale1, Locale locale2);
@@ -101,7 +102,7 @@ MultiLanguages.setOnLanguageListener(new OnLanguageListener() {
 
     @Override
     public void onSystemLocaleChange(Locale oldLocale, Locale newLocale) {
-        Log.d("MultiLanguages", "监听到系统切换了语种，旧语种：" + oldLocale + "，新语种：" + newLocale);
+        Log.d("MultiLanguages", "监听到系统切换了语种，旧语种：" + oldLocale + "，新语种：" + newLocale + "，是否跟随系统：" + MultiLanguages.isSystemLanguage());
     }
 });
 ```
@@ -187,11 +188,11 @@ public final class LanguagesWebView extends WebView {
 
 * 日志查看框架：[Logcat](https://github.com/getActivity/Logcat)
 
-#### Android技术讨论Q群：78797078
-
 #### 微信公众号：Android轮子哥
 
 ![](https://raw.githubusercontent.com/getActivity/Donate/master/picture/official_ccount.png)
+
+#### Android 技术分享 QQ 群：78797078
 
 #### 如果您觉得我的开源库帮你节省了大量的开发时间，请扫描下方的二维码随意打赏，要是能打赏个 10.24 :monkey_face:就太:thumbsup:了。您的支持将鼓励我继续创作:octocat:
 

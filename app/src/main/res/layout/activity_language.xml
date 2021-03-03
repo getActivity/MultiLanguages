@@ -7,7 +7,7 @@
     android:layout_gravity="center"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context=".LanguageActivity">
+    tools:context=".MainActivity">
 
     <com.hjq.bar.TitleBar
         android:layout_width="wrap_content"
@@ -29,12 +29,13 @@
         android:background="#dcdcdc" />
 
     <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:id="@+id/rg_language_languages"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:padding="20dp">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_language_auto"

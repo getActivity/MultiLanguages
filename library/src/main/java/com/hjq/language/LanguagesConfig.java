@@ -42,14 +42,22 @@ final class LanguagesConfig {
             if (language != null && !"".equals(language)) {
                 sCurrentLanguage = new Locale(language, country);
             } else {
-                sCurrentLanguage = Locale.getDefault();
+                sCurrentLanguage = LanguagesUtils.getLocale(context);
             }
         }
         return sCurrentLanguage;
     }
 
+    public static boolean isSystemLanguage(Context context) {
+        String language = getSharedPreferences(context).getString(KEY_LANGUAGE, null);
+        return language == null || "".equals(language);
+    }
+
     static void clearLanguage(Context context) {
         sCurrentLanguage = MultiLanguages.getSystemLanguage();
-        getSharedPreferences(context).edit().remove(KEY_LANGUAGE).remove(KEY_COUNTRY).apply();
+        getSharedPreferences(context).edit()
+                .remove(KEY_LANGUAGE)
+                .remove(KEY_COUNTRY)
+                .apply();
     }
 }

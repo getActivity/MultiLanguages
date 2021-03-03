@@ -15,10 +15,10 @@ import java.util.Locale;
  *    desc   : 国际化工具类
  */
 @SuppressWarnings("deprecation")
-final class LanguagesTools {
+final class LanguagesUtils {
 
     /**
-     * 获取当前语种对象
+     * 获取语种对象
      */
     static Locale getLocale(Context context) {
         return getLocale(context.getResources().getConfiguration());
@@ -33,26 +33,44 @@ final class LanguagesTools {
     }
 
     /**
+     * 设置语种对象
+     */
+    static void setLocale(Configuration config, Locale locale) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                LocaleList localeList = new LocaleList(locale);
+                config.setLocales(localeList);
+            } else {
+                config.setLocale(locale);
+            }
+        } else {
+            config.locale = locale;
+        }
+    }
+
+    /**
+     * 设置默认的语种环境（日期格式化会用到）
+     */
+    static void setDefaultLocale(Context context) {
+        Configuration configuration = context.getResources().getConfiguration();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            LocaleList.setDefault(configuration.getLocales());
+        } else {
+            Locale.setDefault(configuration.locale);
+        }
+    }
+
+    /**
      * 绑定当前 App 的语种
      */
     static Context attachLanguages(Context context, Locale locale) {
         Resources resources = context.getResources();
         Configuration config = new Configuration(resources.getConfiguration());
-
+        setLocale(config, locale);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                LocaleList localeList = new LocaleList(locale);
-                LocaleList.setDefault(localeList);
-                config.setLocales(localeList);
-            } else {
-                config.setLocale(locale);
-            }
             context = context.createConfigurationContext(config);
-        } else {
-            config.locale = locale;
         }
         resources.updateConfiguration(config, resources.getDisplayMetrics());
-        Locale.setDefault(locale);
         return context;
     }
 
@@ -61,20 +79,8 @@ final class LanguagesTools {
      */
     static void updateLanguages(Resources resources, Locale locale) {
         Configuration config = resources.getConfiguration();
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                LocaleList localeList = new LocaleList(locale);
-                LocaleList.setDefault(localeList);
-                config.setLocales(localeList);
-            } else {
-                config.setLocale(locale);
-            }
-        } else {
-            config.locale = locale;
-        }
+        setLocale(config, locale);
         resources.updateConfiguration(config, resources.getDisplayMetrics());
-        Locale.setDefault(locale);
     }
 
     /**
@@ -82,18 +88,10 @@ final class LanguagesTools {
      */
     static Resources getLanguageResources(Context context, Locale locale) {
         Configuration config = new Configuration();
+        setLocale(config, locale);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                LocaleList localeList = new LocaleList(locale);
-                LocaleList.setDefault(localeList);
-                config.setLocales(localeList);
-            } else {
-                config.setLocale(locale);
-            }
             return context.createConfigurationContext(config).getResources();
         }
-
-        config.locale = locale;
         return new Resources(context.getAssets(), context.getResources().getDisplayMetrics(), config);
     }
 }

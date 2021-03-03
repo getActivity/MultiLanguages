@@ -19,6 +19,7 @@ final class ActivityLanguages implements Application.ActivityLifecycleCallbacks 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
         MultiLanguages.updateAppLanguage(activity);
+        MultiLanguages.updateAppLanguage(activity.getApplication());
     }
 
     @Override
@@ -27,6 +28,7 @@ final class ActivityLanguages implements Application.ActivityLifecycleCallbacks 
     @Override
     public void onActivityResumed(Activity activity) {
         MultiLanguages.updateAppLanguage(activity);
+        MultiLanguages.updateAppLanguage(activity.getApplication());
     }
 
     @Override

@@ -35,14 +35,14 @@ public final class AppApplication extends Application {
 
             @Override
             public void onSystemLocaleChange(Locale oldLocale, Locale newLocale) {
-                Log.d("MultiLanguages", "监听到系统切换了语种，旧语种：" + oldLocale + "，新语种：" + newLocale);
+                Log.d("MultiLanguages", "监听到系统切换了语种，旧语种：" + oldLocale + "，新语种：" + newLocale + "，是否跟随系统：" + MultiLanguages.isSystemLanguage());
             }
         });
     }
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        // 国际化适配（绑定语种）
+        // 绑定语种
         super.attachBaseContext(MultiLanguages.attach(newBase));
     }
 }
