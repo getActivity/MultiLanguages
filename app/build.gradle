@@ -7,10 +7,17 @@ android {
         applicationId "com.hjq.language.demo"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 65
-        versionName "6.5"
+        versionCode 66
+        versionName "6.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    // 支持 JDK 1.8
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -27,9 +34,8 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.1'
 
     // 标题栏框架：https://github.com/getActivity/TitleBar
-    implementation 'com.hjq:titlebar:8.2'
-    // 吐司框架：https://github.com/getActivity/ToastUtils
-    implementation 'com.hjq:toast:8.8'
-    // 内存泄漏捕捉：https://github.com/square/leakcanary
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.5'
+    implementation 'com.github.getActivity:TitleBar:8.5'
+
+    // 内存泄漏检测：https://github.com/square/leakcanary
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 }

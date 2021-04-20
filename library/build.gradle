@@ -1,23 +1,13 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 26
 
     defaultConfig {
         minSdkVersion 14
-        versionCode 65
-        versionName "6.5"
+        versionCode 66
+        versionName "6.6"
     }
-}
-
-publish {
-    userOrg = 'getactivity'
-    groupId = 'com.hjq'
-    artifactId = 'language'
-    publishVersion = '6.5'
-    desc = 'Android Multi Languages Adaptation Framework'
-    website = "https://github.com/getActivity/MultiLanguages"
 }
 
 tasks.withType(Javadoc) {

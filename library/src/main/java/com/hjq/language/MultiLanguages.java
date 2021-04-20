@@ -14,7 +14,7 @@ import java.util.Locale;
  */
 public final class MultiLanguages {
 
-    /** Application 对象 */
+    /** 应用上下文对象 */
     private static Application sApplication;
 
     /** 语种变化监听对象 */
@@ -164,14 +164,24 @@ public final class MultiLanguages {
         sLanguageListener = listener;
     }
 
-    static OnLanguageListener getOnLanguagesListener() {
-        return sLanguageListener;
-    }
-
     /**
      * 设置保存的 SharedPreferences 文件名
      */
     public static void setSharedPreferencesName(String name) {
         LanguagesConfig.setSharedPreferencesName(name);
+    }
+
+    /**
+     * 获取语种变化监听对象
+     */
+    static OnLanguageListener getOnLanguagesListener() {
+        return sLanguageListener;
+    }
+
+    /**
+     * 获取应用上下文
+     */
+    static Application getApplication() {
+        return sApplication;
     }
 }

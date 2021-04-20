@@ -1,7 +1,7 @@
 package com.hjq.language;
 
+import android.app.Application;
 import android.content.ComponentCallbacks;
-import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 
@@ -33,18 +33,22 @@ final class LanguagesObserver implements ComponentCallbacks {
     /**
      * 注册系统语种变化监听
      */
-    static void register(Context context) {
-        context.registerComponentCallbacks(new LanguagesObserver());
+    static void register(Application application) {
+        application.registerComponentCallbacks(new LanguagesObserver());
     }
 
     /**
-     * 手机的语种发生了变化
+     * 手机的配置发生了变化
      */
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         Locale newLocale = LanguagesUtils.getLocale(newConfig);
 
         Locale oldLocale = sSystemLanguage;
+
+        // 更新 Application 的配置，否则会出现横竖屏切换之后 Application 的 orientation 没有随之变化的问题
+        LanguagesUtils.updateConfigurationChanged(MultiLanguages.getApplication(), newConfig);
+
         if (newLocale.equals(oldLocale)) {
             return;
         }

@@ -13,14 +13,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:backButton="false"
-        app:title="https://github.com/getActivity/MultiLanguages"
-        app:titleSize="13sp" />
+        app:title="@string/app_name" />
 
     <com.hjq.language.demo.LanguagesWebView
         android:id="@+id/wv_language_web"
         android:layout_width="match_parent"
         android:layout_height="0px"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_weight="1" />
 
     <View
@@ -28,41 +27,43 @@
         android:layout_height="1px"
         android:background="#dcdcdc" />
 
-    <LinearLayout
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
+    <RadioGroup
         android:id="@+id/rg_language_languages"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btn_language_auto"
+        <RadioButton
+            android:id="@+id/rb_language_auto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
             android:text="自动" />
 
-        <Button
-            android:id="@+id/btn_language_cn"
+        <RadioButton
+            android:id="@+id/rb_language_cn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             android:text="简体" />
 
-        <Button
-            android:id="@+id/btn_language_tw"
+        <RadioButton
+            android:id="@+id/rb_language_tw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             android:text="繁体" />
 
-        <Button
-            android:id="@+id/btn_language_en"
+        <RadioButton
+            android:id="@+id/rb_language_en"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             android:text="英语" />
 
-    </LinearLayout>
+    </RadioGroup>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -86,7 +87,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
         <TextView
@@ -104,8 +105,8 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:orientation="horizontal">
 
         <TextView

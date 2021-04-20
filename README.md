@@ -9,9 +9,23 @@
 #### 集成步骤
 
 ```groovy
+buildscript {
+    ......
+}
+allprojects {
+    repositories {
+        // JitPack 远程仓库：https://jitpack.io
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+
+* 在项目 app 模块下的 `build.gradle` 文件中加入
+
+```groovy
 dependencies {
     // 语种切换框架：https://github.com/getActivity/MultiLanguages
-    implementation 'com.hjq:language:6.5'
+    implementation 'com.github.getActivity:MultiLanguages:6.6'
 }
 ```
 
@@ -25,7 +39,7 @@ public final class XxxApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        // 初始化语种切换框架（自动适配第三方库中 Activity 语种）
+        // 初始化语种切换框架
         MultiLanguages.init(this);
     }
 }

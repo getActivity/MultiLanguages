@@ -2,11 +2,10 @@ package com.hjq.language.demo;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.hjq.language.MultiLanguages;
@@ -20,9 +19,10 @@ import java.util.Locale;
  *    desc   : 多语种切换演示
  */
 public final class MainActivity extends BaseActivity
-        implements View.OnClickListener {
+        implements RadioGroup.OnCheckedChangeListener {
 
     private WebView mWebView;
+    private RadioGroup mRadioGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +30,8 @@ public final class MainActivity extends BaseActivity
         setContentView(R.layout.activity_language);
 
         mWebView = findViewById(R.id.wv_language_web);
+        mRadioGroup = findViewById(R.id.rg_language_languages);
+
         mWebView.setWebViewClient(new WebViewClient());
         mWebView.setWebChromeClient(new WebChromeClient());
         mWebView.loadUrl("https://developer.android.google.cn/index.html");
@@ -38,31 +40,42 @@ public final class MainActivity extends BaseActivity
         ((TextView) findViewById(R.id.tv_language_application)).setText(getApplication().getResources().getString(R.string.current_language));
         ((TextView) findViewById(R.id.tv_language_system)).setText(MultiLanguages.getLanguageString(this, MultiLanguages.getSystemLanguage(), R.string.current_language));
 
-        findViewById(R.id.btn_language_auto).setOnClickListener(this);
-        findViewById(R.id.btn_language_cn).setOnClickListener(this);
-        findViewById(R.id.btn_language_tw).setOnClickListener(this);
-        findViewById(R.id.btn_language_en).setOnClickListener(this);
+        if (MultiLanguages.isSystemLanguage()) {
+            mRadioGroup.check(R.id.rb_language_auto);
+        } else {
+            Locale locale = MultiLanguages.getAppLanguage();
+            if (Locale.CHINA.equals(locale)) {
+                mRadioGroup.check(R.id.rb_language_cn);
+            } else if (Locale.TAIWAN.equals(locale)) {
+                mRadioGroup.check(R.id.rb_language_tw);
+            } else if (Locale.ENGLISH.equals(locale)) {
+                mRadioGroup.check(R.id.rb_language_en);
+            } else {
+                mRadioGroup.check(R.id.rb_language_auto);
+            }
+        }
+
+        mRadioGroup.setOnCheckedChangeListener(this);
     }
 
     /**
-     * {@link View.OnClickListener}
+     * {@link RadioGroup.OnCheckedChangeListener}
      */
     @Override
-    public void onClick(View v) {
+    public void onCheckedChanged(RadioGroup group, int checkedId) {
         // 是否需要重启
         boolean restart = false;
 
-        int viewId = v.getId();
-        if (viewId == R.id.btn_language_auto) {
+        if (checkedId == R.id.rb_language_auto) {
             // 跟随系统
             restart = MultiLanguages.setSystemLanguage(this);
-        } else if (viewId == R.id.btn_language_cn) {
+        } else if (checkedId == R.id.rb_language_cn) {
             // 简体中文
             restart = MultiLanguages.setAppLanguage(this, Locale.CHINA);
-        } else if (viewId == R.id.btn_language_tw) {
+        } else if (checkedId == R.id.rb_language_tw) {
             // 繁体中文
             restart = MultiLanguages.setAppLanguage(this, Locale.TAIWAN);
-        } else if (viewId == R.id.btn_language_en) {
+        } else if (checkedId == R.id.rb_language_en) {
             // 英语
             restart = MultiLanguages.setAppLanguage(this, Locale.ENGLISH);
         }

@@ -8,7 +8,7 @@ import android.os.Bundle;
  *    author : Android 轮子哥
  *    github : https://github.com/getActivity/MultiLanguages
  *    time   : 2021/01/21
- *    desc   : Activity 语种绑定
+ *    desc   : Activity 语种注入
  */
 final class ActivityLanguages implements Application.ActivityLifecycleCallbacks {
 

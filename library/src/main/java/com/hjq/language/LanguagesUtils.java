@@ -84,6 +84,18 @@ final class LanguagesUtils {
     }
 
     /**
+     * 更新手机配置信息变化
+     */
+    static void updateConfigurationChanged(Context context, Configuration newConfig) {
+        Configuration config = new Configuration(newConfig);
+        // 绑定当前语种到这个新的配置对象中
+        LanguagesUtils.setLocale(config, LanguagesConfig.getAppLanguage(context));
+        Resources resources = context.getResources();
+        // 更新上下文的配置信息
+        resources.updateConfiguration(config, resources.getDisplayMetrics());
+    }
+
+    /**
      * 获取某个语种下的 Resources 对象
      */
     static Resources getLanguageResources(Context context, Locale locale) {

@@ -2,6 +2,7 @@ package com.hjq.language;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 
 import java.util.Locale;
 
@@ -17,7 +18,8 @@ final class LanguagesConfig {
     private static final String KEY_COUNTRY = "key_country";
 
     private static String sSharedPreferencesName = "language_setting";
-    private static Locale sCurrentLanguage;
+
+    private static volatile Locale sCurrentLanguage;
 
     static void setSharedPreferencesName(String name) {
         sSharedPreferencesName = name;
@@ -39,7 +41,7 @@ final class LanguagesConfig {
         if (sCurrentLanguage == null) {
             String language = getSharedPreferences(context).getString(KEY_LANGUAGE, null);
             String country = getSharedPreferences(context).getString(KEY_COUNTRY, null);
-            if (language != null && !"".equals(language)) {
+            if (!TextUtils.isEmpty(language)) {
                 sCurrentLanguage = new Locale(language, country);
             } else {
                 sCurrentLanguage = LanguagesUtils.getLocale(context);
