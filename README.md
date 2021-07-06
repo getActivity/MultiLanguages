@@ -10,11 +10,12 @@
 
 ```groovy
 buildscript {
-    ......
+    repositories {
+        maven { url 'https://jitpack.io' }
+    }
 }
 allprojects {
     repositories {
-        // JitPack 远程仓库：https://jitpack.io
         maven { url 'https://jitpack.io' }
     }
 }
@@ -25,7 +26,7 @@ allprojects {
 ```groovy
 dependencies {
     // 语种切换框架：https://github.com/getActivity/MultiLanguages
-    implementation 'com.github.getActivity:MultiLanguages:6.6'
+    implementation 'com.github.getActivity:MultiLanguages:6.8'
 }
 ```
 

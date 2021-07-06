@@ -2,13 +2,17 @@ package com.hjq.language.demo;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.hjq.bar.OnTitleBarListener;
+import com.hjq.bar.TitleBar;
 import com.hjq.language.MultiLanguages;
+import com.hjq.toast.ToastUtils;
 
 import java.util.Locale;
 
@@ -19,39 +23,43 @@ import java.util.Locale;
  *    desc   : 多语种切换演示
  */
 public final class MainActivity extends BaseActivity
-        implements RadioGroup.OnCheckedChangeListener {
+        implements RadioGroup.OnCheckedChangeListener, OnTitleBarListener {
 
+    private TitleBar mTitleBar;
     private WebView mWebView;
     private RadioGroup mRadioGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_language);
+        setContentView(R.layout.activity_main);
 
-        mWebView = findViewById(R.id.wv_language_web);
-        mRadioGroup = findViewById(R.id.rg_language_languages);
+        mTitleBar = findViewById(R.id.tb_main_bar);
+        mWebView = findViewById(R.id.wv_main_web);
+        mRadioGroup = findViewById(R.id.rg_main_languages);
+
+        mTitleBar.setOnTitleBarListener(this);
 
         mWebView.setWebViewClient(new WebViewClient());
         mWebView.setWebChromeClient(new WebChromeClient());
         mWebView.loadUrl("https://developer.android.google.cn/index.html");
 
         //((TextView) findViewById(R.id.tv_language_activity)).setText(this.getResources().getString(R.string.current_language));
-        ((TextView) findViewById(R.id.tv_language_application)).setText(getApplication().getResources().getString(R.string.current_language));
-        ((TextView) findViewById(R.id.tv_language_system)).setText(MultiLanguages.getLanguageString(this, MultiLanguages.getSystemLanguage(), R.string.current_language));
+        ((TextView) findViewById(R.id.tv_main_language_application)).setText(getApplication().getResources().getString(R.string.current_language));
+        ((TextView) findViewById(R.id.tv_main_language_system)).setText(MultiLanguages.getLanguageString(this, MultiLanguages.getSystemLanguage(), R.string.current_language));
 
         if (MultiLanguages.isSystemLanguage()) {
-            mRadioGroup.check(R.id.rb_language_auto);
+            mRadioGroup.check(R.id.rb_main_language_auto);
         } else {
             Locale locale = MultiLanguages.getAppLanguage();
             if (Locale.CHINA.equals(locale)) {
-                mRadioGroup.check(R.id.rb_language_cn);
+                mRadioGroup.check(R.id.rb_main_language_cn);
             } else if (Locale.TAIWAN.equals(locale)) {
-                mRadioGroup.check(R.id.rb_language_tw);
+                mRadioGroup.check(R.id.rb_main_language_tw);
             } else if (Locale.ENGLISH.equals(locale)) {
-                mRadioGroup.check(R.id.rb_language_en);
+                mRadioGroup.check(R.id.rb_main_language_en);
             } else {
-                mRadioGroup.check(R.id.rb_language_auto);
+                mRadioGroup.check(R.id.rb_main_language_auto);
             }
         }
 
@@ -66,16 +74,16 @@ public final class MainActivity extends BaseActivity
         // 是否需要重启
         boolean restart = false;
 
-        if (checkedId == R.id.rb_language_auto) {
+        if (checkedId == R.id.rb_main_language_auto) {
             // 跟随系统
             restart = MultiLanguages.setSystemLanguage(this);
-        } else if (checkedId == R.id.rb_language_cn) {
+        } else if (checkedId == R.id.rb_main_language_cn) {
             // 简体中文
             restart = MultiLanguages.setAppLanguage(this, Locale.CHINA);
-        } else if (checkedId == R.id.rb_language_tw) {
+        } else if (checkedId == R.id.rb_main_language_tw) {
             // 繁体中文
             restart = MultiLanguages.setAppLanguage(this, Locale.TAIWAN);
-        } else if (checkedId == R.id.rb_language_en) {
+        } else if (checkedId == R.id.rb_main_language_en) {
             // 英语
             restart = MultiLanguages.setAppLanguage(this, Locale.ENGLISH);
         }
@@ -125,4 +133,15 @@ public final class MainActivity extends BaseActivity
         //销毁此的WebView的内部状态
         mWebView.destroy();
     }
+
+    @Override
+    public void onLeftClick(View view) {}
+
+    @Override
+    public void onTitleClick(View view) {
+        ToastUtils.show(R.string.app_name);
+    }
+
+    @Override
+    public void onRightClick(View view) {}
 }

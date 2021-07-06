@@ -53,6 +53,12 @@ final class LanguagesObserver implements ComponentCallbacks {
             return;
         }
         sSystemLanguage = newLocale;
+
+        // 如果当前的语种是跟随系统变化的，那么就需要重置一下当前 App 的语种
+        if (LanguagesConfig.isSystemLanguage(MultiLanguages.getApplication())) {
+            LanguagesConfig.clearLanguage(MultiLanguages.getApplication());
+        }
+
         OnLanguageListener listener = MultiLanguages.getOnLanguagesListener();
         if (listener != null) {
             listener.onSystemLocaleChange(oldLocale, newLocale);

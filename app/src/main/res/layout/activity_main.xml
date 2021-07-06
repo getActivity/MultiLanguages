@@ -10,13 +10,14 @@
     tools:context=".MainActivity">
 
     <com.hjq.bar.TitleBar
+        android:id="@+id/tb_main_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:backButton="false"
         app:title="@string/app_name" />
 
     <com.hjq.language.demo.LanguagesWebView
-        android:id="@+id/wv_language_web"
+        android:id="@+id/wv_main_web"
         android:layout_width="match_parent"
         android:layout_height="0px"
         android:layout_marginTop="10dp"
@@ -28,7 +29,7 @@
         android:background="#dcdcdc" />
 
     <RadioGroup
-        android:id="@+id/rg_language_languages"
+        android:id="@+id/rg_main_languages"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -36,28 +37,28 @@
         android:orientation="horizontal">
 
         <RadioButton
-            android:id="@+id/rb_language_auto"
+            android:id="@+id/rb_main_language_auto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
             android:text="自动" />
 
         <RadioButton
-            android:id="@+id/rb_language_cn"
+            android:id="@+id/rb_main_language_cn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:text="简体" />
 
         <RadioButton
-            android:id="@+id/rb_language_tw"
+            android:id="@+id/rb_main_language_tw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:text="繁体" />
 
         <RadioButton
-            android:id="@+id/rb_language_en"
+            android:id="@+id/rb_main_language_en"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -77,7 +78,7 @@
             android:text="当前 Activity 语种：" />
 
         <TextView
-            android:id="@+id/tv_language_activity"
+            android:id="@+id/tv_main_language_activity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
@@ -96,7 +97,7 @@
             android:text="当前 Application 语种：" />
 
         <TextView
-            android:id="@+id/tv_language_application"
+            android:id="@+id/tv_main_language_application"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp" />
@@ -115,7 +116,7 @@
             android:text="当前 System 语种：" />
 
         <TextView
-            android:id="@+id/tv_language_system"
+            android:id="@+id/tv_main_language_system"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp" />

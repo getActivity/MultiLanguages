@@ -12,6 +12,7 @@ import java.util.Locale;
  *    time   : 2019/05/03
  *    desc   : 语种切换框架
  */
+@SuppressWarnings("unused")
 public final class MultiLanguages {
 
     /** 应用上下文对象 */
