@@ -58,6 +58,9 @@ public final class MultiLanguages {
      * 更新 Resources 的语种
      */
     public static void updateAppLanguage(Resources resources) {
+        if (resources == null) {
+            return;
+        }
         if (LanguagesUtils.getLocale(resources.getConfiguration()).equals(getAppLanguage())) {
             return;
         }
@@ -77,6 +80,7 @@ public final class MultiLanguages {
      * @return              语种是否发生改变了
      */
     public static boolean setAppLanguage(Context context, Locale newLocale) {
+        LanguagesConfig.setAppLanguage(context, newLocale);
         if (LanguagesUtils.getLocale(context).equals(newLocale)) {
             return false;
         }
@@ -88,7 +92,7 @@ public final class MultiLanguages {
             // 更新 Application 的语种
             LanguagesUtils.updateLanguages(sApplication.getResources(), newLocale);
         }
-        LanguagesConfig.setAppLanguage(context, newLocale);
+
         LanguagesUtils.setDefaultLocale(context);
         if (sLanguageListener != null) {
             sLanguageListener.onAppLocaleChange(oldLocale, newLocale);
@@ -166,7 +170,7 @@ public final class MultiLanguages {
     }
 
     /**
-     * 设置保存的 SharedPreferences 文件名
+     * 设置保存的 SharedPreferences 文件名（请在 Application 初始化之前设置，可以放在 Application 中的代码块或者静态代码块）
      */
     public static void setSharedPreferencesName(String name) {
         LanguagesConfig.setSharedPreferencesName(name);

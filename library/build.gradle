@@ -5,14 +5,14 @@ android {
 
     defaultConfig {
         minSdkVersion 14
-        versionCode 68
-        versionName "6.8"
+        versionCode 69
+        versionName "6.9"
     }
 
     android.libraryVariants.all { variant ->
         // aar 输出文件名配置
         variant.outputs.all { output ->
-            outputFileName = "language-${android.defaultConfig.versionName}.aar"
+            outputFileName = "${rootProject.name}-${android.defaultConfig.versionName}.aar"
         }
     }
 }

@@ -7,8 +7,8 @@ android {
         applicationId "com.hjq.language.demo"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 68
-        versionName "6.8"
+        versionCode 69
+        versionName "6.9"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 

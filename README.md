@@ -1,6 +1,6 @@
 # 语种切换框架
 
-* 码云地址：[Gitee](https://gitee.com/getActivity/MultiLanguages)
+* 项目地址：[Github](https://github.com/getActivity/MultiLanguages)、[码云](https://gitee.com/getActivity/MultiLanguages)
 
 * [点击此处下载Demo](MultiLanguages.apk)
 
@@ -26,7 +26,7 @@ allprojects {
 ```groovy
 dependencies {
     // 语种切换框架：https://github.com/getActivity/MultiLanguages
-    implementation 'com.github.getActivity:MultiLanguages:6.8'
+    implementation 'com.github.getActivity:MultiLanguages:6.9'
 }
 ```
 
@@ -198,6 +198,8 @@ public final class LanguagesWebView extends WebView {
 * 标题栏框架：[TitleBar](https://github.com/getActivity/TitleBar)
 
 * 悬浮窗框架：[XToast](https://github.com/getActivity/XToast)
+
+* Shape 框架：[ShapeView](https://github.com/getActivity/ShapeView)
 
 * Gson 解析容错：[GsonFactory](https://github.com/getActivity/GsonFactory)
 

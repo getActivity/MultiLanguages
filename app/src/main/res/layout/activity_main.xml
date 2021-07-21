@@ -41,27 +41,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="自动" />
+            android:text="跟随系统" />
 
         <RadioButton
             android:id="@+id/rb_main_language_cn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="15dp"
             android:text="简体" />
 
         <RadioButton
             android:id="@+id/rb_main_language_tw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="15dp"
             android:text="繁体" />
 
         <RadioButton
             android:id="@+id/rb_main_language_en"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="15dp"
             android:text="英语" />
 
     </RadioGroup>
