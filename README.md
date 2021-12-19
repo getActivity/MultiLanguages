@@ -2,31 +2,42 @@
 
 * 项目地址：[Github](https://github.com/getActivity/MultiLanguages)、[码云](https://gitee.com/getActivity/MultiLanguages)
 
-* [点击此处下载Demo](MultiLanguages.apk)
+* 可以扫码下载 Demo 进行演示或者测试，如果扫码下载不了的，[点击此处可直接下载](https://github.com/getActivity/MultiLanguages/releases/download/8.0/MultiLanguages.apk)
 
-![](MultiLanguages.jpg)
+![](picture/demo_code.png)
+
+![](picture/dynamic_figure.gif)
 
 #### 集成步骤
 
+* 如果你的项目 Gradle 配置是在 `7.0 以下`，需要在 `build.gradle` 文件中加入
+
 ```groovy
-buildscript {
-    repositories {
-        maven { url 'https://jitpack.io' }
-    }
-}
 allprojects {
     repositories {
+        // JitPack 远程仓库：https://jitpack.io
         maven { url 'https://jitpack.io' }
     }
 }
 ```
 
-* 在项目 app 模块下的 `build.gradle` 文件中加入
+* 如果你的 Gradle 配置是 `7.0 及以上`，则需要在 `settings.gradle` 文件中加入
+
+```groovy
+dependencyResolutionManagement {
+    repositories {
+        // JitPack 远程仓库：https://jitpack.io
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+
+* 配置完远程仓库后，在项目 app 模块下的 `build.gradle` 文件中加入远程依赖
 
 ```groovy
 dependencies {
     // 语种切换框架：https://github.com/getActivity/MultiLanguages
-    implementation 'com.github.getActivity:MultiLanguages:6.9'
+    implementation 'com.github.getActivity:MultiLanguages:8.0'
 }
 ```
 
@@ -40,6 +51,7 @@ public final class XxxApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
         // 初始化语种切换框架
         MultiLanguages.init(this);
     }
@@ -71,18 +83,19 @@ protected void attachBaseContext(Context newBase) {
 #### 语种设置
 
 ```java
-// 设置当前的语种（返回 true 需要重启 App）
+// 设置当前的语种（返回 true 表示需要重启 App）
 MultiLanguages.setAppLanguage(Context context, Locale locale);
 
 // 获取当前的语种
 MultiLanguages.getAppLanguage();
+
+// 跟随系统语种（返回 true 表示需要重启 App）
+MultiLanguages.clearAppLanguage(Context context);
 ```
 
 #### 其他 API
 
 ```java
-// 将 App 语种设置为系统语种（返回 true 需要重启 App）
-MultiLanguages.setSystemLanguage(Context context);
 // 获取系统的语种
 MultiLanguages.getSystemLanguage();
 // 是否跟随系统的语种
@@ -132,7 +145,7 @@ public void onClick(View v) {
     switch (v.getId()) {
         // 跟随系统
         case R.id.btn_language_auto:
-            restart = MultiLanguages.setSystemLanguage(this);
+            restart = MultiLanguages.clearAppLanguage(this);
             break;
         // 简体中文
         case R.id.btn_language_cn:
@@ -177,33 +190,52 @@ public final class LanguagesWebView extends WebView {
 
     public LanguagesWebView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+
         // 修复 WebView 初始化时会修改 Activity 语种配置的问题
         MultiLanguages.updateAppLanguage(context);
     }
 }
 ```
 
+#### 能不能不要通过重启来切换语种？
+
+* 我先问大家一个问题，生米煮成熟饭了，怎么从熟饭变成生米？这显然是不现实的，退一万步讲，假设框架能做到，文字和图片都能自动跟随语种的变化而变化，那么通过接口请求的数据又怎么切换语种？是不是得重新请求？如果是列表数据是不是得从第 1 页开始请求？再问大家一个问题，还有语种切换是一个常用动作吗？我相信大家此时心里已经有了答案。
+
+* 所以并不是做不到不用重启的效果，而是没有那个必要（切语种不是常用动作），并且存在一定的硬伤（虽然 UI 层不用动，但是数据层还是要重新请求）。
+
 #### 其他资源：[语言代码列表大全](https://github.com/championswimmer/android-locales)
 
 #### 作者的其他开源项目
 
-* 安卓技术中台：[AndroidProject](https://github.com/getActivity/AndroidProject)
+* 安卓技术中台：[AndroidProject](https://github.com/getActivity/AndroidProject) ![](https://img.shields.io/github/stars/getActivity/AndroidProject.svg) ![](https://img.shields.io/github/forks/getActivity/AndroidProject.svg)
 
-* 网络框架：[EasyHttp](https://github.com/getActivity/EasyHttp)
+* 安卓技术中台 Kt 版：[AndroidProject-Kotlin](https://github.com/getActivity/AndroidProject-Kotlin) ![](https://img.shields.io/github/stars/getActivity/AndroidProject-Kotlin.svg) ![](https://img.shields.io/github/forks/getActivity/AndroidProject-Kotlin.svg)
 
-* 权限框架：[XXPermissions](https://github.com/getActivity/XXPermissions)
+* 权限框架：[XXPermissions](https://github.com/getActivity/XXPermissions) ![](https://img.shields.io/github/stars/getActivity/XXPermissions.svg) ![](https://img.shields.io/github/forks/getActivity/XXPermissions.svg)
 
-* 吐司框架：[ToastUtils](https://github.com/getActivity/ToastUtils)
+* 吐司框架：[ToastUtils](https://github.com/getActivity/ToastUtils) ![](https://img.shields.io/github/stars/getActivity/ToastUtils.svg) ![](https://img.shields.io/github/forks/getActivity/ToastUtils.svg)
 
-* 标题栏框架：[TitleBar](https://github.com/getActivity/TitleBar)
+* 网络框架：[EasyHttp](https://github.com/getActivity/EasyHttp) ![](https://img.shields.io/github/stars/getActivity/EasyHttp.svg) ![](https://img.shields.io/github/forks/getActivity/EasyHttp.svg)
 
-* 悬浮窗框架：[XToast](https://github.com/getActivity/XToast)
+* 标题栏框架：[TitleBar](https://github.com/getActivity/TitleBar) ![](https://img.shields.io/github/stars/getActivity/TitleBar.svg) ![](https://img.shields.io/github/forks/getActivity/TitleBar.svg)
 
-* Shape 框架：[ShapeView](https://github.com/getActivity/ShapeView)
+* 悬浮窗框架：[XToast](https://github.com/getActivity/XToast) ![](https://img.shields.io/github/stars/getActivity/XToast.svg) ![](https://img.shields.io/github/forks/getActivity/XToast.svg)
 
-* Gson 解析容错：[GsonFactory](https://github.com/getActivity/GsonFactory)
+* Shape 框架：[ShapeView](https://github.com/getActivity/ShapeView) ![](https://img.shields.io/github/stars/getActivity/ShapeView.svg) ![](https://img.shields.io/github/forks/getActivity/ShapeView.svg)
 
-* 日志查看框架：[Logcat](https://github.com/getActivity/Logcat)
+* Gson 解析容错：[GsonFactory](https://github.com/getActivity/GsonFactory) ![](https://img.shields.io/github/stars/getActivity/GsonFactory.svg) ![](https://img.shields.io/github/forks/getActivity/GsonFactory.svg)
+
+* 日志查看框架：[Logcat](https://github.com/getActivity/Logcat) ![](https://img.shields.io/github/stars/getActivity/Logcat.svg) ![](https://img.shields.io/github/forks/getActivity/Logcat.svg)
+
+* Android 版本适配：[AndroidVersionAdapter](https://github.com/getActivity/AndroidVersionAdapter) ![](https://img.shields.io/github/stars/getActivity/AndroidVersionAdapter.svg) ![](https://img.shields.io/github/forks/getActivity/AndroidVersionAdapter.svg)
+
+* Android 代码规范：[AndroidCodeStandard](https://github.com/getActivity/AndroidCodeStandard) ![](https://img.shields.io/github/stars/getActivity/AndroidCodeStandard.svg) ![](https://img.shields.io/github/forks/getActivity/AndroidCodeStandard.svg)
+
+* Studio 精品插件：[StudioPlugins](https://github.com/getActivity/StudioPlugins) ![](https://img.shields.io/github/stars/getActivity/StudioPlugins.svg) ![](https://img.shields.io/github/forks/getActivity/StudioPlugins.svg)
+
+* 表情包大集合：[EmojiPackage](https://github.com/getActivity/EmojiPackage) ![](https://img.shields.io/github/stars/getActivity/EmojiPackage.svg) ![](https://img.shields.io/github/forks/getActivity/EmojiPackage.svg)
+
+* 省市区 Json 数据：[ProvinceJson](https://github.com/getActivity/ProvinceJson) ![](https://img.shields.io/github/stars/getActivity/ProvinceJson.svg) ![](https://img.shields.io/github/forks/getActivity/ProvinceJson.svg)
 
 #### 微信公众号：Android轮子哥
 

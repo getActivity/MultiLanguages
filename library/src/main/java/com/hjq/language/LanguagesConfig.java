@@ -10,7 +10,7 @@ import java.util.Locale;
  *    author : Android 轮子哥
  *    github : https://github.com/getActivity/MultiLanguages
  *    time   : 2019/05/03
- *    desc   : 配置保存类
+ *    desc   : 语种配置保存类
  */
 final class LanguagesConfig {
 

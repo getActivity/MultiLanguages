@@ -13,7 +13,7 @@
         android:id="@+id/tb_main_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:backButton="false"
+        app:leftIcon="@null"
         app:title="@string/app_name" />
 
     <com.hjq.language.demo.LanguagesWebView

@@ -108,11 +108,11 @@ public final class MultiLanguages {
     }
 
     /**
-     * 将 App 语种设置为系统语种
+     * 跟随系统语种
      *
      * @return              语种是否发生改变了
      */
-    public static boolean setSystemLanguage(Context context) {
+    public static boolean clearAppLanguage(Context context) {
         LanguagesConfig.clearLanguage(context);
         if (LanguagesUtils.getLocale(context).equals(getSystemLanguage())) {
             return false;

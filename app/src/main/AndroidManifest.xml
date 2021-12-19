@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.hjq.language.demo">
 
-    <!-- 联网权限 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -17,7 +16,8 @@
         tools:targetApi="q">
 
         <activity
-            android:name=".MainActivity">
+            android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -27,5 +27,15 @@
         </activity>
 
     </application>
+
+    <!-- Android 11 软件包可见性适配 -->
+    <queries>
+
+        <!-- 调起其他页面意图：Intent.ACTION_VIEW -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+        </intent>
+
+    </queries>
 
 </manifest>

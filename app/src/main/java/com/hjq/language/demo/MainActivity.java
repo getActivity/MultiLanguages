@@ -1,8 +1,8 @@
 package com.hjq.language.demo;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.hjq.bar.OnTitleBarListener;
 import com.hjq.bar.TitleBar;
 import com.hjq.language.MultiLanguages;
-import com.hjq.toast.ToastUtils;
 
 import java.util.Locale;
 
@@ -25,20 +24,19 @@ import java.util.Locale;
 public final class MainActivity extends BaseActivity
         implements RadioGroup.OnCheckedChangeListener, OnTitleBarListener {
 
-    private TitleBar mTitleBar;
     private WebView mWebView;
-    private RadioGroup mRadioGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mTitleBar = findViewById(R.id.tb_main_bar);
         mWebView = findViewById(R.id.wv_main_web);
-        mRadioGroup = findViewById(R.id.rg_main_languages);
 
-        mTitleBar.setOnTitleBarListener(this);
+        TitleBar titleBar = findViewById(R.id.tb_main_bar);
+        RadioGroup radioGroup = findViewById(R.id.rg_main_languages);
+
+        titleBar.setOnTitleBarListener(this);
 
         mWebView.setWebViewClient(new WebViewClient());
         mWebView.setWebChromeClient(new WebChromeClient());
@@ -49,21 +47,21 @@ public final class MainActivity extends BaseActivity
         ((TextView) findViewById(R.id.tv_main_language_system)).setText(MultiLanguages.getLanguageString(this, MultiLanguages.getSystemLanguage(), R.string.current_language));
 
         if (MultiLanguages.isSystemLanguage()) {
-            mRadioGroup.check(R.id.rb_main_language_auto);
+            radioGroup.check(R.id.rb_main_language_auto);
         } else {
             Locale locale = MultiLanguages.getAppLanguage();
             if (Locale.CHINA.equals(locale)) {
-                mRadioGroup.check(R.id.rb_main_language_cn);
+                radioGroup.check(R.id.rb_main_language_cn);
             } else if (Locale.TAIWAN.equals(locale)) {
-                mRadioGroup.check(R.id.rb_main_language_tw);
+                radioGroup.check(R.id.rb_main_language_tw);
             } else if (Locale.ENGLISH.equals(locale)) {
-                mRadioGroup.check(R.id.rb_main_language_en);
+                radioGroup.check(R.id.rb_main_language_en);
             } else {
-                mRadioGroup.check(R.id.rb_main_language_auto);
+                radioGroup.check(R.id.rb_main_language_auto);
             }
         }
 
-        mRadioGroup.setOnCheckedChangeListener(this);
+        radioGroup.setOnCheckedChangeListener(this);
     }
 
     /**
@@ -76,7 +74,7 @@ public final class MainActivity extends BaseActivity
 
         if (checkedId == R.id.rb_main_language_auto) {
             // 跟随系统
-            restart = MultiLanguages.setSystemLanguage(this);
+            restart = MultiLanguages.clearAppLanguage(this);
         } else if (checkedId == R.id.rb_main_language_cn) {
             // 简体中文
             restart = MultiLanguages.setAppLanguage(this, Locale.CHINA);
@@ -135,13 +133,9 @@ public final class MainActivity extends BaseActivity
     }
 
     @Override
-    public void onLeftClick(View view) {}
-
-    @Override
-    public void onTitleClick(View view) {
-        ToastUtils.show(R.string.app_name);
+    public void onTitleClick(TitleBar titleBar) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("https://github.com/getActivity/MultiLanguages"));
+        startActivity(intent);
     }
-
-    @Override
-    public void onRightClick(View view) {}
 }
