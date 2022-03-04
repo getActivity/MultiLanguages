@@ -197,6 +197,10 @@ public final class LanguagesWebView extends WebView {
 }
 ```
 
+#### 为什么在项目中切换语种没有任何效果？
+
+* 可以检查一下是否在 `build.gradle` 文件中配置了仅保留某个国家的语种资源，例如 `resConfigs 'zh'` 就代表只保留和中文相关的语种资源，而其他国家的语种资源就不会被打包进 apk 包中，这样就会导致在切换语种的时候始终都是中文的尴尬局面，如果不是这个原因造成的，请提一个 issue 给到我处理。
+
 #### 能不能不要通过重启来切换语种？
 
 * 我先问大家一个问题，生米煮成熟饭了，怎么从熟饭变成生米？这显然是不现实的，退一万步讲，假设框架能做到，文字和图片都能自动跟随语种的变化而变化，那么通过接口请求的数据又怎么切换语种？是不是得重新请求？如果是列表数据是不是得从第 1 页开始请求？再问大家一个问题，还有语种切换是一个常用动作吗？我相信大家此时心里已经有了答案。
@@ -241,7 +245,7 @@ public final class LanguagesWebView extends WebView {
 
 ![](https://raw.githubusercontent.com/getActivity/Donate/master/picture/official_ccount.png)
 
-#### Android 技术分享 QQ 群：78797078
+#### Android 技术 Q 群：10047167
 
 #### 如果您觉得我的开源库帮你节省了大量的开发时间，请扫描下方的二维码随意打赏，要是能打赏个 10.24 :monkey_face:就太:thumbsup:了。您的支持将鼓励我继续创作:octocat:
 
