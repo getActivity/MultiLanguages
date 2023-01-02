@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.res.Resources;
 
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -188,5 +189,12 @@ public final class MultiLanguages {
      */
     static Application getApplication() {
         return sApplication;
+    }
+    
+     /**
+     * 设置App不支持系统语言时的语言
+     */
+    public static void setDefaultLanguageIfAppNotSupport(List<Locale> supportedLocale, Locale defaultLocale) {
+        LanguagesConfig.setDefaultLanguageIfNotSupport(supportedLocale, defaultLocale);
     }
 }
