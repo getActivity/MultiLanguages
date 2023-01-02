@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import androidx.annotation.Nullable;
+
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -20,6 +23,12 @@ final class LanguagesConfig {
     private static String sSharedPreferencesName = "language_setting";
 
     private static volatile Locale sCurrentLanguage;
+    
+    @Nullable
+    private static List<Locale> sSupportedLanguages;
+
+    @Nullable
+    private static Locale sDefaultLocale;
 
     static void setSharedPreferencesName(String name) {
         sSharedPreferencesName = name;
@@ -44,7 +53,7 @@ final class LanguagesConfig {
             if (!TextUtils.isEmpty(language)) {
                 sCurrentLanguage = new Locale(language, country);
             } else {
-                sCurrentLanguage = LanguagesUtils.getLocale(context);
+                sCurrentLanguage = getDefaultLanguage();
             }
         }
         return sCurrentLanguage;
@@ -56,10 +65,27 @@ final class LanguagesConfig {
     }
 
     static void clearLanguage(Context context) {
-        sCurrentLanguage = MultiLanguages.getSystemLanguage();
+        sCurrentLanguage = getDefaultLanguage();
         getSharedPreferences(context).edit()
                 .remove(KEY_LANGUAGE)
                 .remove(KEY_COUNTRY)
                 .apply();
+    }
+    
+    static void setDefaultLanguageIfNotSupport(List<Locale> supportedLocales, Locale defaultLocale) {
+        sSupportedLanguages = supportedLocales;
+        sDefaultLocale = defaultLocale;
+    }
+    
+    public static Locale getDefaultLanguage() {
+        Locale systemLanguage = LanguagesObserver.getSystemLanguage();
+        if (sSupportedLanguages == null || sDefaultLocale == null) return systemLanguage;
+        boolean supportSystemLanguage = false;
+        for (Locale locale : sSupportedLanguages) {
+            if (MultiLanguages.equalsLanguage(locale, systemLanguage)) {
+                supportSystemLanguage = true;
+            }
+        }
+        return supportSystemLanguage ? systemLanguage : sDefaultLocale;
     }
 }
