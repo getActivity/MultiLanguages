@@ -115,15 +115,15 @@ public final class MultiLanguages {
      */
     public static boolean clearAppLanguage(Context context) {
         LanguagesConfig.clearLanguage(context);
-        if (LanguagesUtils.getLocale(context).equals(getSystemLanguage())) {
+        if (LanguagesUtils.getLocale(context).equals(LanguagesConfig.getDefaultLanguage())) {
             return false;
         }
 
-        LanguagesUtils.updateLanguages(context.getResources(), getSystemLanguage());
+        LanguagesUtils.updateLanguages(context.getResources(), LanguagesConfig.getDefaultLanguage());
         LanguagesUtils.setDefaultLocale(context);
         if (context != sApplication) {
             // 更新 Application 的语种
-            LanguagesUtils.updateLanguages(sApplication.getResources(), getSystemLanguage());
+            LanguagesUtils.updateLanguages(sApplication.getResources(), LanguagesConfig.getDefaultLanguage());
         }
         return true;
     }
