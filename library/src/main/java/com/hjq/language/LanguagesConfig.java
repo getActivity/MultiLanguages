@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
-import androidx.annotation.Nullable;
-
 import java.util.List;
 import java.util.Locale;
 
@@ -23,11 +21,9 @@ final class LanguagesConfig {
     private static String sSharedPreferencesName = "language_setting";
 
     private static volatile Locale sCurrentLanguage;
-    
-    @Nullable
+
     private static List<Locale> sSupportedLanguages;
 
-    @Nullable
     private static Locale sDefaultLocale;
 
     static void setSharedPreferencesName(String name) {
