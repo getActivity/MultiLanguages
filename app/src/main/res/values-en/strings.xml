@@ -1,4 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MultiLanguages</string>
     <string name="current_language">English</string>
+
+    <string name="current_activity_language">Current Activity language: </string>
+    <string name="current_application_language">Current Application language: </string>
+    <string name="current_system_language">Current System language: </string>
 </resources>

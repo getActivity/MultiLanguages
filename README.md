@@ -1,8 +1,8 @@
 # 语种切换框架
 
-* 项目地址：[Github](https://github.com/getActivity/MultiLanguages)、[码云](https://gitee.com/getActivity/MultiLanguages)
+* 项目地址：[Github](https://github.com/getActivity/MultiLanguages)
 
-* 可以扫码下载 Demo 进行演示或者测试，如果扫码下载不了的，[点击此处可直接下载](https://github.com/getActivity/MultiLanguages/releases/download/8.0/MultiLanguages.apk)
+* 可以扫码下载 Demo 进行演示或者测试，如果扫码下载不了的，[点击此处可直接下载](https://github.com/getActivity/MultiLanguages/releases/download/9.0/MultiLanguages.apk)
 
 ![](picture/demo_code.png)
 
@@ -37,7 +37,7 @@ dependencyResolutionManagement {
 ```groovy
 dependencies {
     // 语种切换框架：https://github.com/getActivity/MultiLanguages
-    implementation 'com.github.getActivity:MultiLanguages:8.0'
+    implementation 'com.github.getActivity:MultiLanguages:9.0'
 }
 ```
 
@@ -80,6 +80,8 @@ protected void attachBaseContext(Context newBase) {
 
 * 只要是 Context 的子类都需要重写，Service 也雷同，这里不再赘述
 
+* 温馨提示：Fragment 不需要重写此方法，因为它不是 Context 的子类
+
 #### 语种设置
 
 ```java
@@ -97,11 +99,11 @@ MultiLanguages.clearAppLanguage(Context context);
 
 ```java
 // 获取系统的语种
-MultiLanguages.getSystemLanguage();
+MultiLanguages.getSystemLanguage(Context context);
 // 是否跟随系统的语种
-MultiLanguages.isSystemLanguage();
+MultiLanguages.isSystemLanguage(Context context);
 
-// 对比两个语言是否是同一个语种（比如：中文的简体和繁体，英语的美式和英式）
+// 对比两个语言是否是同一个语种（比如：中文有简体和繁体，英语有美式和英式）
 MultiLanguages.equalsLanguage(Locale locale1, Locale locale2);
 // 对比两个语言是否是同一个地方的（比如：中国大陆用的中文简体，中国台湾用的中文繁体）
 MultiLanguages.equalsCountry(Locale locale1, Locale locale2);
@@ -115,6 +117,12 @@ MultiLanguages.getLanguageResources(Context context, Locale locale);
 MultiLanguages.updateAppLanguage(Context context);
 // 更新 Resources 的语种
 MultiLanguages.updateAppLanguage(Resources resources);
+
+// 设置默认的语种（越早设置越好）
+MultiLanguages.setDefaultLanguage(Locale locale);
+
+// 获取语种系统设置界面（Android 13 及以上才有的）
+Intent intent = MultiLanguages.getLanguageSettingIntent();
 ```
 
 #### 语种变化监听器
@@ -149,15 +157,15 @@ public void onClick(View v) {
             break;
         // 简体中文
         case R.id.btn_language_cn:
-            restart = MultiLanguages.setAppLanguage(this, Locale.CHINA);
+            restart = MultiLanguages.setAppLanguage(this, LocaleContract.getSimplifiedChineseLocale());
             break;
         // 繁体中文
         case R.id.btn_language_tw:
-            restart = MultiLanguages.setAppLanguage(this, Locale.TAIWAN);
+            restart = MultiLanguages.setAppLanguage(this, LocaleContract.getTraditionalChineseLocale());
             break;
         // 英语
         case R.id.btn_language_en:
-            restart = MultiLanguages.setAppLanguage(this, Locale.ENGLISH);
+            restart = MultiLanguages.setAppLanguage(this, LocaleContract.getEnglishLocale());
             break;
         default:
             restart = false;
@@ -173,39 +181,15 @@ public void onClick(View v) {
 }
 ```
 
-#### WebView 导致语种失效的解决方案
+#### 框架混淆规则
 
-* 由于 WebView 初始化会修改 Activity 语种配置，间接导致 Activity 语种会被还原回去，所以需要你手动重写 WebView 对这个问题进行修复
+* 在混淆规则文件 `proguard-rules.pro` 中加入
 
-```java
-public final class LanguagesWebView extends WebView {
-
-    public LanguagesWebView(@NonNull Context context) {
-        this(context, null);
-    }
-
-    public LanguagesWebView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public LanguagesWebView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-
-        // 修复 WebView 初始化时会修改 Activity 语种配置的问题
-        MultiLanguages.updateAppLanguage(context);
-    }
-}
+```text
+-keep class com.hjq.language.** {*;}
 ```
 
-#### 为什么在项目中切换语种没有任何效果？
-
-* 可以检查一下是否在 `build.gradle` 文件中配置了仅保留某个国家的语种资源，例如 `resConfigs 'zh'` 就代表只保留和中文相关的语种资源，而其他国家的语种资源就不会被打包进 apk 包中，这样就会导致在切换语种的时候始终都是中文的尴尬局面，如果不是这个原因造成的，请提一个 issue 给到我处理。
-
-#### 能不能不要通过重启来切换语种？
-
-* 我先问大家一个问题，生米煮成熟饭了，怎么从熟饭变成生米？这显然是不现实的，退一万步讲，假设框架能做到，文字和图片都能自动跟随语种的变化而变化，那么通过接口请求的数据又怎么切换语种？是不是得重新请求？如果是列表数据是不是得从第 1 页开始请求？再问大家一个问题，还有语种切换是一个常用动作吗？我相信大家此时心里已经有了答案。
-
-* 所以并不是做不到不用重启的效果，而是没有那个必要（切语种不是常用动作），并且存在一定的硬伤（虽然 UI 层不用动，但是数据层还是要重新请求）。
+## [常见疑问请点击此处查看](HelpDoc.md)
 
 #### 其他资源：[语言代码列表大全](https://github.com/championswimmer/android-locales)
 
@@ -217,13 +201,13 @@ public final class LanguagesWebView extends WebView {
 
 * 权限框架：[XXPermissions](https://github.com/getActivity/XXPermissions) ![](https://img.shields.io/github/stars/getActivity/XXPermissions.svg) ![](https://img.shields.io/github/forks/getActivity/XXPermissions.svg)
 
-* 吐司框架：[ToastUtils](https://github.com/getActivity/ToastUtils) ![](https://img.shields.io/github/stars/getActivity/ToastUtils.svg) ![](https://img.shields.io/github/forks/getActivity/ToastUtils.svg)
+* 吐司框架：[Toaster](https://github.com/getActivity/Toaster) ![](https://img.shields.io/github/stars/getActivity/Toaster.svg) ![](https://img.shields.io/github/forks/getActivity/Toaster.svg)
 
 * 网络框架：[EasyHttp](https://github.com/getActivity/EasyHttp) ![](https://img.shields.io/github/stars/getActivity/EasyHttp.svg) ![](https://img.shields.io/github/forks/getActivity/EasyHttp.svg)
 
 * 标题栏框架：[TitleBar](https://github.com/getActivity/TitleBar) ![](https://img.shields.io/github/stars/getActivity/TitleBar.svg) ![](https://img.shields.io/github/forks/getActivity/TitleBar.svg)
 
-* 悬浮窗框架：[XToast](https://github.com/getActivity/XToast) ![](https://img.shields.io/github/stars/getActivity/XToast.svg) ![](https://img.shields.io/github/forks/getActivity/XToast.svg)
+* 悬浮窗框架：[EasyWindow](https://github.com/getActivity/EasyWindow) ![](https://img.shields.io/github/stars/getActivity/EasyWindow.svg) ![](https://img.shields.io/github/forks/getActivity/EasyWindow.svg)
 
 * Shape 框架：[ShapeView](https://github.com/getActivity/ShapeView) ![](https://img.shields.io/github/stars/getActivity/ShapeView.svg) ![](https://img.shields.io/github/forks/getActivity/ShapeView.svg)
 
@@ -235,11 +219,19 @@ public final class LanguagesWebView extends WebView {
 
 * Android 代码规范：[AndroidCodeStandard](https://github.com/getActivity/AndroidCodeStandard) ![](https://img.shields.io/github/stars/getActivity/AndroidCodeStandard.svg) ![](https://img.shields.io/github/forks/getActivity/AndroidCodeStandard.svg)
 
+* Android 资源大汇总：[AndroidIndex](https://github.com/getActivity/AndroidIndex) ![](https://img.shields.io/github/stars/getActivity/AndroidIndex.svg) ![](https://img.shields.io/github/forks/getActivity/AndroidIndex.svg)
+
+* Android 开源排行榜：[AndroidGithubBoss](https://github.com/getActivity/AndroidGithubBoss) ![](https://img.shields.io/github/stars/getActivity/AndroidGithubBoss.svg) ![](https://img.shields.io/github/forks/getActivity/AndroidGithubBoss.svg)
+
 * Studio 精品插件：[StudioPlugins](https://github.com/getActivity/StudioPlugins) ![](https://img.shields.io/github/stars/getActivity/StudioPlugins.svg) ![](https://img.shields.io/github/forks/getActivity/StudioPlugins.svg)
 
 * 表情包大集合：[EmojiPackage](https://github.com/getActivity/EmojiPackage) ![](https://img.shields.io/github/stars/getActivity/EmojiPackage.svg) ![](https://img.shields.io/github/forks/getActivity/EmojiPackage.svg)
 
+* AI 资源大汇总：[AiIndex](https://github.com/getActivity/AiIndex) ![](https://img.shields.io/github/stars/getActivity/AiIndex.svg) ![](https://img.shields.io/github/forks/getActivity/AiIndex.svg)
+
 * 省市区 Json 数据：[ProvinceJson](https://github.com/getActivity/ProvinceJson) ![](https://img.shields.io/github/stars/getActivity/ProvinceJson.svg) ![](https://img.shields.io/github/forks/getActivity/ProvinceJson.svg)
+
+* Markdown 语法文档：[MarkdownDoc](https://github.com/getActivity/MarkdownDoc) ![](https://img.shields.io/github/stars/getActivity/MarkdownDoc.svg) ![](https://img.shields.io/github/forks/getActivity/MarkdownDoc.svg)
 
 #### 微信公众号：Android轮子哥
 
@@ -247,11 +239,21 @@ public final class LanguagesWebView extends WebView {
 
 #### Android 技术 Q 群：10047167
 
-#### 如果您觉得我的开源库帮你节省了大量的开发时间，请扫描下方的二维码随意打赏，要是能打赏个 10.24 :monkey_face:就太:thumbsup:了。您的支持将鼓励我继续创作:octocat:
+#### 如果您觉得我的开源库帮你节省了大量的开发时间，请扫描下方的二维码随意打赏，要是能打赏个 10.24 :monkey_face:就太:thumbsup:了。您的支持将鼓励我继续创作:octocat:（[点击查看捐赠列表](https://github.com/getActivity/Donate)）
 
 ![](https://raw.githubusercontent.com/getActivity/Donate/master/picture/pay_ali.png) ![](https://raw.githubusercontent.com/getActivity/Donate/master/picture/pay_wechat.png)
 
-#### [点击查看捐赠列表](https://github.com/getActivity/Donate)
+#### 广告区
+
+* 我现在任腾讯云服务器推广大使，大家如果有购买服务器的需求，可以通过下面的链接购买
+
+[![](https://upload-dianshi-1255598498.file.myqcloud.com/upload/nodir/345X200-9ae456f58874df499adf7c331c02cb0fed12b81d.jpg)](https://curl.qcloud.com/A6cYskvv)
+
+[【腾讯云】云服务器、云数据库、COS、CDN、短信等云产品特惠热卖中](https://curl.qcloud.com/A6cYskvv)
+
+[![](https://upload-dianshi-1255598498.file.myqcloud.com/345-200-b28f7dee9552f4241ea6a543f15a9798049701d4.jpg)](https://curl.qcloud.com/up4fQsdn)
+
+[【腾讯云】中小企业福利专场，多款刚需产品，满足企业通用场景需求](https://curl.qcloud.com/up4fQsdn)
 
 ## License
 

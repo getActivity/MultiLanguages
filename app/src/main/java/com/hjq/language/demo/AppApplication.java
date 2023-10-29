@@ -6,7 +6,7 @@ import android.util.Log;
 
 import com.hjq.language.MultiLanguages;
 import com.hjq.language.OnLanguageListener;
-import com.hjq.toast.ToastUtils;
+import com.hjq.toast.Toaster;
 
 import java.util.Locale;
 
@@ -18,12 +18,17 @@ import java.util.Locale;
  */
 public final class AppApplication extends Application {
 
+//    static {
+//        // 设置默认的语种（越早设置越好）
+//        MultiLanguages.setDefaultLanguage(LocaleContract.getEnglishLocale());
+//    }
+
     @Override
     public void onCreate() {
         super.onCreate();
 
         // 初始化 Toast 框架
-        ToastUtils.init(this);
+        Toaster.init(this);
 
         // 初始化多语种框架
         MultiLanguages.init(this);
@@ -32,12 +37,13 @@ public final class AppApplication extends Application {
 
             @Override
             public void onAppLocaleChange(Locale oldLocale, Locale newLocale) {
-                Log.d("MultiLanguages", "监听到应用切换了语种，旧语种：" + oldLocale + "，新语种：" + newLocale);
+                Log.i("MultiLanguages", "监听到应用切换了语种，旧语种：" + oldLocale + "，新语种：" + newLocale);
             }
 
             @Override
             public void onSystemLocaleChange(Locale oldLocale, Locale newLocale) {
-                Log.d("MultiLanguages", "监听到系统切换了语种，旧语种：" + oldLocale + "，新语种：" + newLocale + "，是否跟随系统：" + MultiLanguages.isSystemLanguage());
+                Log.i("MultiLanguages", "监听到系统切换了语种，旧语种：" + oldLocale + "，新语种：" + newLocale +
+                        "，是否跟随系统：" + MultiLanguages.isSystemLanguage(AppApplication.this));
             }
         });
     }

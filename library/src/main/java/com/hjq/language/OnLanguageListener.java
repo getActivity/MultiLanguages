@@ -24,5 +24,6 @@ public interface OnLanguageListener {
      * @param oldLocale         旧语种
      * @param newLocale         新语种
      */
+    @Deprecated
     void onSystemLocaleChange(Locale oldLocale, Locale newLocale);
 }

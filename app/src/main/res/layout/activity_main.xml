@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="跟随系统" />
+            android:text="Auto" />
 
         <RadioButton
             android:id="@+id/rb_main_language_cn"
@@ -55,14 +55,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:text="繁体" />
+            android:text="繁體" />
 
         <RadioButton
             android:id="@+id/rb_main_language_en"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
-            android:text="英语" />
+            android:text="English" />
 
     </RadioGroup>
 
@@ -75,13 +75,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="当前 Activity 语种：" />
+            android:text="@string/current_activity_language" />
 
         <TextView
             android:id="@+id/tv_main_language_activity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="20dp"
             android:text="@string/current_language" />
     </LinearLayout>
 
@@ -94,13 +94,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="当前 Application 语种：" />
+            android:text="@string/current_application_language" />
 
         <TextView
             android:id="@+id/tv_main_language_application"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp" />
+            android:layout_marginLeft="20dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -113,13 +113,13 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="当前 System 语种：" />
+            android:text="@string/current_system_language" />
 
         <TextView
             android:id="@+id/tv_main_language_system"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp" />
+            android:layout_marginLeft="20dp" />
     </LinearLayout>
 
 </LinearLayout>

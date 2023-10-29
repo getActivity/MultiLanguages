@@ -1,4 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">國際化</string>
     <string name="current_language">繁體中文</string>
+
+    <string name="current_activity_language">當前 Activity 語種：</string>
+    <string name="current_application_language">當前 Application 語種：</string>
+    <string name="current_system_language">當前 System 語種：</string>
 </resources>

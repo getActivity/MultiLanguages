@@ -22,7 +22,7 @@ public final class LanguagesWebView extends WebView {
     }
 
     public LanguagesWebView(@NonNull Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, 0);
+        this(context, attrs, android.R.attr.webViewStyle);
     }
 
     public LanguagesWebView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
