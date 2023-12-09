@@ -635,7 +635,7 @@ public final class LocaleContract {
       return sTamilLocale;
    }
 
-   /** 泰国 */
+   /** 泰语 */
    private static volatile Locale sThailandLocale;
 
    public static Locale getThailandLocale() {

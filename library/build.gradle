@@ -5,8 +5,8 @@ android {
 
     defaultConfig {
         minSdkVersion 14
-        versionCode 90
-        versionName "9.0"
+        versionCode 902
+        versionName "9.2"
     }
 
     android.libraryVariants.configureEach { variant ->

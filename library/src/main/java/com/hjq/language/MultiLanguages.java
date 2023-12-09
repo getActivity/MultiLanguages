@@ -3,14 +3,11 @@ package com.hjq.language;
 import android.app.Application;
 import android.app.LocaleManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Build;
 import android.os.LocaleList;
 import android.os.Looper;
 import android.os.MessageQueue;
-import android.provider.Settings;
 import android.text.TextUtils;
 import java.util.Locale;
 
@@ -37,15 +34,29 @@ public final class MultiLanguages {
     }
 
     public static void init(final Application application, boolean inject) {
+        if (sApplication != null) {
+            // 如果框架已经初始化过了，则不往下执行
+            return;
+        }
         sApplication = application;
         LanguagesUtils.setDefaultLocale(application);
         if (inject) {
             ActivityLanguages.inject(application);
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && !isSystemLanguage(application)) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             LocaleManager localeManager = application.getSystemService(LocaleManager.class);
             if (localeManager != null) {
-                localeManager.setApplicationLocales(new LocaleList(getAppLanguage()));
+                if (isSystemLanguage(application)) {
+                    // 在没有设置过 setApplicationLocales 方法，里面的默认值会为 LocaleList.getEmptyLocaleList()
+                    // 当设置过一次的 setApplicationLocales 为其他值，在 Android 13 的手机设置中修改语种（系统或者应用）的时候
+                    // 就会导致 context.registerComponentCallbacks 中的 onConfigurationChanged 监听方法没有触发到
+                    // 如果当前应用指定了某种语种，监听方法没有回调是正常的，但是如果当前语种是跟随系统的模式，那么不回调就是有问题的了
+                    // 这是因为系统对 setApplicationLocales 的结果进行了持久化操作，所以这里要重新设置一下，并传入 LocaleList.getEmptyLocaleList()
+                    // Github issue：https://github.com/getActivity/MultiLanguages/issues/37
+                    localeManager.setApplicationLocales(LocaleList.getEmptyLocaleList());
+                } else {
+                    localeManager.setApplicationLocales(new LocaleList(getAppLanguage()));
+                }
             }
         }
         // 等所有的任务都执行完了，再设置对系统语种的监听，用户不可能在这点间隙的时间完成切换语言的
@@ -53,7 +64,8 @@ public final class MultiLanguages {
         Looper.myQueue().addIdleHandler(new MessageQueue.IdleHandler() {
             @Override
             public boolean queueIdle() {
-                LanguagesObserver.register(application);
+                ConfigurationObserver.register(application);
+                LocaleChangeReceiver.register(application);
                 return false;
             }
         });
@@ -109,7 +121,6 @@ public final class MultiLanguages {
         // 这里解释一下，在 Android 13 上为什么不用 LocaleManager.setApplicationLocales 来设置语种，原因如下：
         // 1. 调用此 API 会自动重启 Activity，而框架是将重启操作放到了外层给开发者去重启
         // 2. 上面说了，调用此 API 会重启 Activity，重启也就算了，还顺带闪了一下，这个不能忍
-        // 3. 调用此 API 会触发 onConfigurationChanged 方法，会导致框架误判为系统切换了语种，从而回调了错误的监听给外层
         LanguagesConfig.saveAppLanguageSetting(context, newLocale);
         if (LanguagesUtils.getLocale(context).equals(newLocale)) {
             return false;
@@ -212,20 +223,6 @@ public final class MultiLanguages {
      */
     public static void setSharedPreferencesName(String name) {
         LanguagesConfig.setSharedPreferencesName(name);
-    }
-
-    /**
-     * 获取语种系统设置界面（Android 13 及以上才有的）
-     */
-    public static Intent getLanguageSettingIntent() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            Intent intent = new Intent(Settings.ACTION_APP_LOCALE_SETTINGS);
-            intent.setData(Uri.parse("package:" + sApplication.getPackageName()));
-            if (LanguagesUtils.areActivityIntent(sApplication, intent)) {
-                return intent;
-            }
-        }
-        return null;
     }
 
     /**

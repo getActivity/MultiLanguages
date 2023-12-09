@@ -209,11 +209,9 @@ public final class MainActivity extends Activity {
     @NonNull
     public static Map<String, String> generateLanguageRequestHeader() {
         Map<String, String> map = new HashMap<>(1);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            // Android 13 上面语种失效的问题解决方案
-            // https://developer.android.google.cn/about/versions/13/features/app-languages?hl=zh-cn#consider-header
-            map.put("Accept-Language", String.valueOf(MultiLanguages.getAppLanguage()));
-        }
+        // Android 13 上面语种失效的问题解决方案
+        // https://developer.android.google.cn/about/versions/13/features/app-languages?hl=zh-cn#consider-header
+        map.put("Accept-Language", String.valueOf(MultiLanguages.getAppLanguage()));
         return map;
     }
 }

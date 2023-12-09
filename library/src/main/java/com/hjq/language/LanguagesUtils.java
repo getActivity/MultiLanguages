@@ -2,8 +2,6 @@ package com.hjq.language;
 
 import android.app.LocaleManager;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
@@ -123,23 +121,5 @@ final class LanguagesUtils {
             return context.createConfigurationContext(config).getResources();
         }
         return new Resources(context.getAssets(), context.getResources().getDisplayMetrics(), config);
-    }
-
-    /**
-     * 判断这个意图的 Activity 是否存在
-     */
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    static boolean areActivityIntent(Context context, Intent intent) {
-        if (intent == null) {
-            return false;
-        }
-        // 这里为什么不用 Intent.resolveActivity(intent) != null 来判断呢？
-        // 这是因为在 OPPO R7 Plus （Android 5.0）会出现误判，明明没有这个 Activity，却返回了 ComponentName 对象
-        PackageManager packageManager = context.getPackageManager();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            return !packageManager.queryIntentActivities(intent,
-                PackageManager.ResolveInfoFlags.of(PackageManager.MATCH_DEFAULT_ONLY)).isEmpty();
-        }
-        return !packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY).isEmpty();
     }
 }

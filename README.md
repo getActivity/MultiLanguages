@@ -2,7 +2,7 @@
 
 * 项目地址：[Github](https://github.com/getActivity/MultiLanguages)
 
-* 可以扫码下载 Demo 进行演示或者测试，如果扫码下载不了的，[点击此处可直接下载](https://github.com/getActivity/MultiLanguages/releases/download/9.0/MultiLanguages.apk)
+* 可以扫码下载 Demo 进行演示或者测试，如果扫码下载不了的，[点击此处可直接下载](https://github.com/getActivity/MultiLanguages/releases/download/9.2/MultiLanguages.apk)
 
 ![](picture/demo_code.png)
 
@@ -37,7 +37,7 @@ dependencyResolutionManagement {
 ```groovy
 dependencies {
     // 语种切换框架：https://github.com/getActivity/MultiLanguages
-    implementation 'com.github.getActivity:MultiLanguages:9.0'
+    implementation 'com.github.getActivity:MultiLanguages:9.2'
 }
 ```
 
@@ -120,9 +120,6 @@ MultiLanguages.updateAppLanguage(Resources resources);
 
 // 设置默认的语种（越早设置越好）
 MultiLanguages.setDefaultLanguage(Locale locale);
-
-// 获取语种系统设置界面（Android 13 及以上才有的）
-Intent intent = MultiLanguages.getLanguageSettingIntent();
 ```
 
 #### 语种变化监听器

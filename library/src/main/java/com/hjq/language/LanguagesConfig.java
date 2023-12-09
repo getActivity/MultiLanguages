@@ -1,9 +1,7 @@
 package com.hjq.language;
 
-import android.app.LocaleManager;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.text.TextUtils;
 import java.util.Locale;
 
@@ -44,6 +42,7 @@ final class LanguagesConfig {
 
         String language = getSharedPreferences(context).getString(KEY_LANGUAGE, "");
         String country = getSharedPreferences(context).getString(KEY_COUNTRY, "");
+
         if (!TextUtils.isEmpty(language)) {
             sCurrentLocale = new Locale(language, country);
             return sCurrentLocale;
@@ -52,18 +51,6 @@ final class LanguagesConfig {
         if (sDefaultLocale != null) {
             sCurrentLocale = sDefaultLocale;
             return sCurrentLocale;
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            // 读取用户在《设置 > 系统 > 语言和输入法 > 应用语言》设置的语种
-            LocaleManager localeManager = context.getSystemService(LocaleManager.class);
-            if (localeManager != null) {
-                sCurrentLocale = localeManager.getApplicationLocales().get(0);
-                // 如果用户没用设置过，则获取到为 null
-                if (sCurrentLocale != null) {
-                    return sCurrentLocale;
-                }
-            }
         }
 
         sCurrentLocale = LanguagesUtils.getLocale(context);
@@ -100,6 +87,7 @@ final class LanguagesConfig {
         if (sDefaultLocale != null) {
             return false;
         }
+
         String language = getSharedPreferences(context).getString(KEY_LANGUAGE, "");
         return TextUtils.isEmpty(language);
     }
