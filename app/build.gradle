@@ -8,8 +8,8 @@ android {
         applicationId "com.hjq.language.demo"
         minSdkVersion 16
         targetSdkVersion 34
-        versionCode 902
-        versionName "9.2"
+        versionCode 930
+        versionName "9.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 

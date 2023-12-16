@@ -173,7 +173,7 @@ public final class MainActivity extends Activity {
 
         mWebView.setWebViewClient(new LanguagesViewClient());
         mWebView.setWebChromeClient(new WebChromeClient());
-        mWebView.loadUrl("https://developer.android.google.cn/kotlin", generateLanguageRequestHeader());
+        mWebView.loadUrl("https://developer.android.google.cn/kotlin", generateLanguageRequestHeader(this));
     }
 
     public static class LanguagesViewClient extends WebViewClient {
@@ -194,7 +194,7 @@ public final class MainActivity extends Activity {
                 // 如果这是跳链接操作
                 case "http":
                 case "https":
-                    view.loadUrl(url, generateLanguageRequestHeader());
+                    view.loadUrl(url, generateLanguageRequestHeader(view.getContext()));
                     break;
                 default:
                     break;
@@ -207,11 +207,11 @@ public final class MainActivity extends Activity {
      * 给 WebView 请求头添加语种环境
      */
     @NonNull
-    public static Map<String, String> generateLanguageRequestHeader() {
+    public static Map<String, String> generateLanguageRequestHeader(Context context) {
         Map<String, String> map = new HashMap<>(1);
         // Android 13 上面语种失效的问题解决方案
         // https://developer.android.google.cn/about/versions/13/features/app-languages?hl=zh-cn#consider-header
-        map.put("Accept-Language", String.valueOf(MultiLanguages.getAppLanguage()));
+        map.put("Accept-Language", String.valueOf(MultiLanguages.getAppLanguage(context)));
         return map;
     }
 }

@@ -21,7 +21,13 @@ final class LocaleChangeReceiver extends BroadcastReceiver {
     static void register(Application application) {
         sSystemLanguage = LanguagesUtils.getSystemLocale(application);
         IntentFilter filter = new IntentFilter(Intent.ACTION_LOCALE_CHANGED);
-        application.registerReceiver(new LocaleChangeReceiver(), filter);
+        application.registerReceiver(new LocaleChangeReceiver(application), filter);
+    }
+
+    private final Application mApplication;
+
+    public LocaleChangeReceiver(Application application) {
+        mApplication = application;
     }
 
     @Override
@@ -44,7 +50,7 @@ final class LocaleChangeReceiver extends BroadcastReceiver {
             return;
         }
 
-        Locale latestSystemLocale = MultiLanguages.getSystemLanguage(MultiLanguages.getApplication());
+        Locale latestSystemLocale = MultiLanguages.getSystemLanguage(mApplication);
         if (MultiLanguages.equalsCountry(latestSystemLocale, sSystemLanguage)) {
             return;
         }
@@ -59,8 +65,8 @@ final class LocaleChangeReceiver extends BroadcastReceiver {
         sSystemLanguage = newLocale;
 
         // 如果当前的语种是跟随系统变化的，那么就需要重置一下当前 App 的语种
-        if (LanguagesConfig.isSystemLanguage(MultiLanguages.getApplication())) {
-            LanguagesConfig.clearLanguageSetting(MultiLanguages.getApplication());
+        if (LanguagesConfig.isSystemLanguage(mApplication)) {
+            LanguagesConfig.clearLanguageSetting(mApplication);
         }
 
         OnLanguageListener listener = MultiLanguages.getOnLanguagesListener();

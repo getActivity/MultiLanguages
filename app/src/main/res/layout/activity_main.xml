@@ -14,7 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:leftIcon="@null"
-        app:title="@string/app_name" />
+        app:title="https://github.com/getActivity/MultiLanguages" />
 
     <com.hjq.language.demo.LanguagesWebView
         android:id="@+id/wv_main_web"

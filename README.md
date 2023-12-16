@@ -2,7 +2,7 @@
 
 * 项目地址：[Github](https://github.com/getActivity/MultiLanguages)
 
-* 可以扫码下载 Demo 进行演示或者测试，如果扫码下载不了的，[点击此处可直接下载](https://github.com/getActivity/MultiLanguages/releases/download/9.2/MultiLanguages.apk)
+* 可以扫码下载 Demo 进行演示或者测试，如果扫码下载不了的，[点击此处可直接下载](https://github.com/getActivity/MultiLanguages/releases/download/9.3/MultiLanguages.apk)
 
 ![](picture/demo_code.png)
 
@@ -37,7 +37,7 @@ dependencyResolutionManagement {
 ```groovy
 dependencies {
     // 语种切换框架：https://github.com/getActivity/MultiLanguages
-    implementation 'com.github.getActivity:MultiLanguages:9.2'
+    implementation 'com.github.getActivity:MultiLanguages:9.3'
 }
 ```
 
@@ -89,7 +89,7 @@ protected void attachBaseContext(Context newBase) {
 MultiLanguages.setAppLanguage(Context context, Locale locale);
 
 // 获取当前的语种
-MultiLanguages.getAppLanguage();
+MultiLanguages.getAppLanguage(Context context);
 
 // 跟随系统语种（返回 true 表示需要重启 App）
 MultiLanguages.clearAppLanguage(Context context);
@@ -110,8 +110,8 @@ MultiLanguages.equalsCountry(Locale locale1, Locale locale2);
 
 // 获取某个语种下的 String
 MultiLanguages.getLanguageString(Context context, Locale locale, int stringId);
-// 获取某个语种下的 Resources 对象
-MultiLanguages.getLanguageResources(Context context, Locale locale);
+// 生成某个语种下的 Resources 对象
+MultiLanguages.generateLanguageResources(Context context, Locale locale);
 
 // 更新 Context 的语种
 MultiLanguages.updateAppLanguage(Context context);

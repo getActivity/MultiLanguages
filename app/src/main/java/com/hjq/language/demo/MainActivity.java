@@ -1,6 +1,7 @@
 package com.hjq.language.demo;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -30,6 +31,7 @@ public final class MainActivity extends BaseActivity
         implements RadioGroup.OnCheckedChangeListener, OnTitleBarListener {
 
     private WebView mWebView;
+    private TextView mSystemLanguageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,18 +47,19 @@ public final class MainActivity extends BaseActivity
 
         mWebView.setWebViewClient(new LanguagesViewClient());
         mWebView.setWebChromeClient(new WebChromeClient());
-        mWebView.loadUrl("https://developer.android.google.cn/kotlin", generateLanguageRequestHeader());
+        mWebView.loadUrl("https://developer.android.google.cn/kotlin", generateLanguageRequestHeader(this));
 
         //((TextView) findViewById(R.id.tv_language_activity)).setText(this.getResources().getString(R.string.current_language));
         ((TextView) findViewById(R.id.tv_main_language_application)).setText(
                 getApplication().getResources().getString(R.string.current_language));
-        ((TextView) findViewById(R.id.tv_main_language_system)).setText(
-                MultiLanguages.getLanguageString(this, MultiLanguages.getSystemLanguage(this), R.string.current_language));
+        mSystemLanguageView = findViewById(R.id.tv_main_language_system);
+        mSystemLanguageView.setText(MultiLanguages.getLanguageString(this,
+            MultiLanguages.getSystemLanguage(this), R.string.current_language));
 
         if (MultiLanguages.isSystemLanguage(this)) {
             radioGroup.check(R.id.rb_main_language_auto);
         } else {
-            Locale locale = MultiLanguages.getAppLanguage();
+            Locale locale = MultiLanguages.getAppLanguage(this);
             if (LocaleContract.getSimplifiedChineseLocale().equals(locale)) {
                 radioGroup.check(R.id.rb_main_language_cn);
             } else if (LocaleContract.getTraditionalChineseLocale().equals(locale)) {
@@ -114,6 +117,12 @@ public final class MainActivity extends BaseActivity
         super.onResume();
         mWebView.onResume();
         mWebView.resumeTimers();
+
+        if (mSystemLanguageView == null) {
+            return;
+        }
+        mSystemLanguageView.setText(MultiLanguages.getLanguageString(this,
+            MultiLanguages.getSystemLanguage(this), R.string.current_language));
     }
 
     @Override
@@ -143,7 +152,7 @@ public final class MainActivity extends BaseActivity
     @Override
     public void onTitleClick(TitleBar titleBar) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("https://github.com/getActivity/MultiLanguages"));
+        intent.setData(Uri.parse(titleBar.getTitle().toString()));
         startActivity(intent);
     }
 
@@ -165,7 +174,7 @@ public final class MainActivity extends BaseActivity
                 // 如果这是跳链接操作
                 case "http":
                 case "https":
-                    view.loadUrl(url, generateLanguageRequestHeader());
+                    view.loadUrl(url, generateLanguageRequestHeader(view.getContext()));
                     break;
                 default:
                     break;
@@ -178,11 +187,11 @@ public final class MainActivity extends BaseActivity
      * 给 WebView 请求头添加语种环境
      */
     @NonNull
-    public static Map<String, String> generateLanguageRequestHeader() {
+    public static Map<String, String> generateLanguageRequestHeader(Context context) {
         Map<String, String> map = new HashMap<>(1);
         // Android 13 上面语种失效的问题解决方案
         // https://developer.android.google.cn/about/versions/13/features/app-languages?hl=zh-cn#consider-header
-        map.put("Accept-Language", String.valueOf(MultiLanguages.getAppLanguage()));
+        map.put("Accept-Language", String.valueOf(MultiLanguages.getAppLanguage(context)));
         return map;
     }
 }
