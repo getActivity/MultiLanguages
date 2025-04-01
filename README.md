@@ -178,14 +178,6 @@ public void onClick(View v) {
 }
 ```
 
-#### 框架混淆规则
-
-* 在混淆规则文件 `proguard-rules.pro` 中加入
-
-```text
--keep class com.hjq.language.** {*;}
-```
-
 ## [常见疑问请点击此处查看](HelpDoc.md)
 
 #### 其他资源：[语言代码列表大全](https://github.com/championswimmer/android-locales)
