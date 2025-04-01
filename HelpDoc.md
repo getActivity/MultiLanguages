@@ -6,13 +6,13 @@
 
 * [怎么在切换语种后应用到所有 Activity 上](#怎么在切换语种后应用到所有-activity-上)
 
-* [怎么在用户切换系统语种的时候重启 App](#怎么在用户切换系统语种的时候重启-app)
+* [怎么在用户切换系统语种的时候刷新所有界面](#怎么在用户切换系统语种的时候刷新所有界面)
+
+* [在系统切换语种返回应用后没有生效怎么办](#在系统切换语种返回应用后没有生效怎么办)
 
 * [WebView 导致语种失效的解决方案](#webview-导致语种失效的解决方案)
 
 * [Android 13 WebView 语种失效怎么办](#android-13-webview-语种失效怎么办)
-
-* [上架 aab 包后语种切换失败了怎么处理](#上架-aab-包后语种切换失败了怎么处理)
 
 * [有没有一种不用通过重启的方式来切换语种](#有没有一种不用通过重启的方式来切换语种)
 
@@ -105,7 +105,7 @@ MultiLanguages.setOnLanguageListener(new OnLanguageListener() {
 });
 ```
 
-#### 怎么在用户切换系统语种的时候重启 App
+#### 怎么在用户切换系统语种的时候刷新所有界面
 
 * 在 Application 的 onCreate 方法中加入以下代码
 
@@ -121,6 +121,52 @@ MultiLanguages.setOnLanguageListener(new OnLanguageListener() {
     public void onSystemLocaleChange(Locale oldLocale, Locale newLocale) {
         Log.i("MultiLanguages", "监听到系统切换了语种，旧语种：" + oldLocale + "，新语种：" + newLocale +
                 "，是否跟随系统：" + MultiLanguages.isSystemLanguage());
+
+        // 当前语种是否是跟随系统，如果不是则不往下执行
+        if (!MultiLanguages.isSystemLanguage(AppApplication.this)) {
+            return;
+        }
+        
+        // 如需在系统切换语种后应用也要随之变化的，可以在这里获取所有的 Activity 并调用它的 recreate 方法
+        // getAllActivity 只是演示代码，需要自行替换成项目已实现的方法，若项目中没有，请自行封装
+        List<Activity> activityList = getAllActivity();
+        for (Activity activity : activityList) {
+            activity.recreate();
+        }
+    }
+});
+```
+
+#### 在系统切换语种返回应用后没有生效怎么办
+
+* 请检查在 Activity 配置了 `android:configChanges` 属性，有的话请去掉再进行尝试，这个属性的文档请查看 [`<activity>`](https://developer.android.google.cn/guide/topics/manifest/activity-element?hl=zh)
+
+```xml
+<activity
+    android:name=".XxxActivity"
+    android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode" />
+```
+
+* 如果你不想去除 `android:configChanges` 属性，又想切换系统语种后生效，在 Application 的 onCreate 方法中加入以下代码
+
+```java
+MultiLanguages.setOnLanguageListener(new OnLanguageListener() {
+
+    @Override
+    public void onAppLocaleChange(Locale oldLocale, Locale newLocale) {
+        Log.i("MultiLanguages", "监听到应用切换了语种，旧语种：" + oldLocale + "，新语种：" + newLocale);
+    }
+
+    @Override
+    public void onSystemLocaleChange(Locale oldLocale, Locale newLocale) {
+        Log.i("MultiLanguages", "监听到系统切换了语种，旧语种：" + oldLocale + "，新语种：" + newLocale +
+                "，是否跟随系统：" + MultiLanguages.isSystemLanguage());
+
+        // 当前语种是否是跟随系统，如果不是则不往下执行
+        if (!MultiLanguages.isSystemLanguage(AppApplication.this)) {
+            return;
+        }
+        
         // 如需在系统切换语种后应用也要随之变化的，可以在这里获取所有的 Activity 并调用它的 recreate 方法
         // getAllActivity 只是演示代码，需要自行替换成项目已实现的方法，若项目中没有，请自行封装
         List<Activity> activityList = getAllActivity();
