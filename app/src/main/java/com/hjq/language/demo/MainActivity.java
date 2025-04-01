@@ -106,7 +106,15 @@ public final class MainActivity extends BaseActivity
             // finish();
 
             // 3.我们可以充分运用 Activity 跳转动画，在跳转的时候设置一个渐变的效果，相比前面的两种带来的体验是最佳的
-            startActivity(new Intent(this, MainActivity.class));
+            // startActivity(new Intent(this, MainActivity.class));
+            // overridePendingTransition(R.anim.activity_alpha_in, R.anim.activity_alpha_out);
+            // finish();
+
+            // 4. 我们可以充分运用 Activity 跳转动画，在跳转的时候设置一个渐变的效果
+            Intent intent = new Intent(this, MainActivity.class);
+            // Github 地址：https://github.com/getActivity/MultiLanguages/issues/55
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
             overridePendingTransition(R.anim.activity_alpha_in, R.anim.activity_alpha_out);
             finish();
         }

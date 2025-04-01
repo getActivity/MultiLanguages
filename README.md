@@ -171,7 +171,10 @@ public void onClick(View v) {
 
     if (restart) {
         // 我们可以充分运用 Activity 跳转动画，在跳转的时候设置一个渐变的效果
-        startActivity(new Intent(this, LanguageActivity.class));
+        Intent intent = new Intent(this, MainActivity.class);
+        // Github 地址：https://github.com/getActivity/MultiLanguages/issues/55
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
         overridePendingTransition(R.anim.activity_alpha_in, R.anim.activity_alpha_out);
         finish();
     }
