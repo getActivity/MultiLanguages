@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
+apply from : '../common.gradle'
 
 android {
-    compileSdkVersion 34
+
+    namespace 'com.hjq.language'
 
     defaultConfig {
         minSdkVersion 14
-        versionCode 950
-        versionName "9.5"
     }
 
     android.libraryVariants.configureEach { variant ->
@@ -15,14 +15,6 @@ android {
             outputFileName = "${rootProject.name}-${android.defaultConfig.versionName}.aar"
         }
     }
-}
-
-afterEvaluate {
-    // 排除 BuildConfig.class 和 R.class
-    generateReleaseBuildConfig.enabled = false
-    generateDebugBuildConfig.enabled = false
-    generateReleaseResValues.enabled = false
-    generateDebugResValues.enabled = false
 }
 
 tasks.withType(Javadoc).configureEach {
@@ -45,9 +37,4 @@ tasks.register('javadocJar', Jar) {
     dependsOn javadoc
     classifier = 'javadoc'
     from javadoc.destinationDir
-}
-
-artifacts {
-    archives javadocJar
-    archives sourcesJar
 }
