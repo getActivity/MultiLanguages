@@ -3,8 +3,6 @@ apply from : '../common.gradle'
 
 android {
 
-    namespace 'com.hjq.language'
-
     defaultConfig {
         minSdkVersion 14
     }

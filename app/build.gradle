@@ -4,8 +4,6 @@ apply from : '../common.gradle'
 
 android {
 
-    namespace 'com.hjq.language.demo'
-
     defaultConfig {
         applicationId "com.hjq.language.demo"
         minSdkVersion 16
