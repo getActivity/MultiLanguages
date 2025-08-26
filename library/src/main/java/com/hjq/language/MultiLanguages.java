@@ -96,10 +96,14 @@ public final class MultiLanguages {
         if (resources == null) {
             return;
         }
-        if (LanguagesUtils.getLocale(resources.getConfiguration()).equals(getAppLanguage(context))) {
-            return;
+        Locale locale = getAppLanguage(context);
+        if (!locale.equals(LanguagesUtils.getLocale(resources.getConfiguration()))) {
+            LanguagesUtils.updateLanguages(resources, locale);
         }
-        LanguagesUtils.updateLanguages(resources, getAppLanguage(context));
+        if (!locale.equals(LanguagesUtils.getDefaultLocale())) {
+            // Github issue 地址：https://github.com/getActivity/MultiLanguages/issues/59
+            LanguagesUtils.setDefaultLocale(context);
+        }
     }
 
     /**
@@ -137,8 +141,9 @@ public final class MultiLanguages {
             // 更新 Application 的语种
             LanguagesUtils.updateLanguages(sApplication.getResources(), newLocale);
         }
-
+        // 重新设置默认的语种环境
         LanguagesUtils.setDefaultLocale(context);
+
         if (sLanguageListener != null) {
             sLanguageListener.onAppLocaleChange(oldLocale, newLocale);
         }

@@ -65,6 +65,17 @@ final class LanguagesUtils {
     }
 
     /**
+     * 获取默认的语种环境
+     */
+    static Locale getDefaultLocale() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return LocaleList.getDefault().get(0);
+        } else {
+            return Locale.getDefault();
+        }
+    }
+
+    /**
      * 设置默认的语种环境（日期格式化会用到）
      */
     static void setDefaultLocale(Context context) {
