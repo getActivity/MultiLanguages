@@ -4,7 +4,7 @@
 
 * Project address: [Github](https://github.com/getActivity/MultiLanguages)
 
-* [Click here to download demo apk directly](https://github.com/getActivity/MultiLanguages/releases/download/9.6/MultiLanguages.apk)
+* [Click here to download demo apk directly](https://github.com/getActivity/MultiLanguages/releases/download/9.8/MultiLanguages.apk)
 
 ![](picture/dynamic_figure.gif)
 
@@ -37,7 +37,7 @@ dependencyResolutionManagement {
 ```groovy
 dependencies {
     // Language switching framework: https://github.com/getActivity/MultiLanguages
-    implementation 'com.github.getActivity:MultiLanguages:9.6'
+    implementation 'com.github.getActivity:MultiLanguages:9.8'
 }
 ```
 
