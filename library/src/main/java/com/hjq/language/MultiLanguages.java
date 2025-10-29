@@ -1,11 +1,8 @@
 package com.hjq.language;
 
 import android.app.Application;
-import android.app.LocaleManager;
 import android.content.Context;
 import android.content.res.Resources;
-import android.os.Build;
-import android.os.LocaleList;
 import android.os.Looper;
 import android.os.MessageQueue;
 import android.text.TextUtils;
@@ -43,6 +40,7 @@ public final class MultiLanguages {
         if (inject) {
             ActivityLanguages.inject(application);
         }
+        /*
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             LocaleManager localeManager = application.getSystemService(LocaleManager.class);
             if (localeManager != null) {
@@ -59,6 +57,7 @@ public final class MultiLanguages {
                 }
             }
         }
+        */
         // 等所有的任务都执行完了，再设置对系统语种的监听，用户不可能在这点间隙的时间完成切换语言的
         // 经过实践证明 IdleHandler 会在第一个 Activity attachBaseContext 之后调用的，所以没有什么问题
         Looper.myQueue().addIdleHandler(new MessageQueue.IdleHandler() {
@@ -123,9 +122,11 @@ public final class MultiLanguages {
      * @return              语种是否发生改变了
      */
     public static boolean setAppLanguage(Context context, Locale newLocale) {
-        //if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        //      context.getSystemService(LocaleManager.class).setApplicationLocales(new LocaleList(newLocale));
-        //}
+        /*
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+              context.getSystemService(LocaleManager.class).setApplicationLocales(new LocaleList(newLocale));
+        }
+        */
         // 这里解释一下，在 Android 13 上为什么不用 LocaleManager.setApplicationLocales 来设置语种，原因如下：
         // 1. 调用此 API 会自动重启 Activity，而框架是将重启操作放到了外层给开发者去重启
         // 2. 上面说了，调用此 API 会重启 Activity，重启也就算了，还顺带闪了一下，这个不能忍
