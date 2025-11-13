@@ -39,6 +39,10 @@ final class LanguagesUtils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             LocaleList localeList = new LocaleList(locale);
             config.setLocales(localeList);
+            // 在一台Android13的联想平板上，setLocales和setLocale均无效，修改config.locale生效，所以这里判断一下是否设置成功
+            if (config.getLocales().get(0) != locale) {
+                config.locale = locale;
+            }
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             config.setLocale(locale);
         } else {

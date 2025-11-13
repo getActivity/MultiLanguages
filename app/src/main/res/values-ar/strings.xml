@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">تدويل</string>
+    <string name="current_language">اتبع النظام</string>
+
+    <string name="current_activity_language">النشاط الحالي اللغة:</string>
+    <string name="current_application_language">لغة التطبيق الحالية:</string>
+    <string name="current_system_language">لغة النظام الحالية:</string>
+</resources>
