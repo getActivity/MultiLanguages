@@ -704,9 +704,4 @@ public final class LocaleContract {
       }
       return sUzbekLocale;
    }
-
-   public static boolean shouldRTL(Locale locale) {
-      return LocaleContract.getArabicLocale().equals(locale)
-              || LocaleContract.getHebrewLocale().equals(locale);
-   }
 }

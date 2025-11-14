@@ -2,11 +2,7 @@ package com.hjq.language;
 
 import android.app.Activity;
 import android.app.Application;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
-
-import java.util.Locale;
 
 /**
  *    author : Android 轮子哥
@@ -34,13 +30,6 @@ final class ActivityLanguages implements Application.ActivityLifecycleCallbacks 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
         refreshActivityAndApplicationLanguage(activity);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            Locale locale = MultiLanguages.getAppLanguage(activity);
-            if (LocaleContract.shouldRTL(locale)) {
-                View rootView = activity.findViewById(android.R.id.content);
-                rootView.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
-            }
-        }
     }
 
     @Override

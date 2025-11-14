@@ -2,7 +2,9 @@ package com.hjq.language;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Looper;
 import android.os.MessageQueue;
 import android.text.TextUtils;
@@ -96,7 +98,10 @@ public final class MultiLanguages {
             return;
         }
         Locale locale = getAppLanguage(context);
-        if (!locale.equals(LanguagesUtils.getLocale(resources.getConfiguration()))) {
+        Configuration config = resources.getConfiguration();
+        if (!locale.equals(LanguagesUtils.getLocale(config))
+            || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1
+                && TextUtils.getLayoutDirectionFromLocale(locale) != config.getLayoutDirection())) {
             LanguagesUtils.updateLanguages(resources, locale);
         }
         if (!locale.equals(LanguagesUtils.getDefaultLocale())) {

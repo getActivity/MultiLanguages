@@ -43,8 +43,10 @@ final class LanguagesUtils {
             if (config.getLocales().get(0) != locale) {
                 config.locale = locale;
             }
+            config.setLayoutDirection(locale);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             config.setLocale(locale);
+            config.setLayoutDirection(locale);
         } else {
             config.locale = locale;
         }

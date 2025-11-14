@@ -7,6 +7,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -199,9 +201,12 @@ public final class MainActivity extends BaseActivity
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
             super.onPageStarted(view, url, favicon);
 
-            if (LocaleContract.shouldRTL(MultiLanguages.getAppLanguage(view.getContext()))) {
-                // 水平滚动条滚动到最右边
-                view.scrollTo(view.getWidth(), 0);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                Locale locale = MultiLanguages.getAppLanguage(view.getContext());
+                if (View.LAYOUT_DIRECTION_RTL == TextUtils.getLayoutDirectionFromLocale(locale)) {
+                    // 水平滚动条滚动到最右边
+                    view.scrollTo(view.getWidth(), 0);
+                }
             }
         }
     }
