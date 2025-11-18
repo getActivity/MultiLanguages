@@ -198,8 +198,8 @@ public final class MainActivity extends BaseActivity
             return true;
         }
         @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            super.onPageStarted(view, url, favicon);
+        public void onPageCommitVisible(WebView view, String url) {
+            super.onPageCommitVisible(view, url);
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
                 Locale locale = MultiLanguages.getAppLanguage(view.getContext());
