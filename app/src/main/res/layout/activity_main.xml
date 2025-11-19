@@ -47,32 +47,32 @@
             android:id="@+id/rb_main_language_cn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginStart="15dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:text="简体" />
 
         <RadioButton
             android:id="@+id/rb_main_language_tw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginStart="15dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:text="繁體" />
 
         <RadioButton
             android:id="@+id/rb_main_language_en"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginStart="15dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:text="English" />
 
         <RadioButton
             android:id="@+id/rb_main_language_ar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_marginStart="15dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:text="عربي" />
 
     </RadioGroup>
