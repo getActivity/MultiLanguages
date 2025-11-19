@@ -3,9 +3,12 @@ package com.hjq.language.demo;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -54,7 +57,7 @@ public final class MainActivity extends BaseActivity
                 getApplication().getResources().getString(R.string.current_language));
         mSystemLanguageView = findViewById(R.id.tv_main_language_system);
         mSystemLanguageView.setText(MultiLanguages.getLanguageString(this,
-            MultiLanguages.getSystemLanguage(this), R.string.current_language));
+                MultiLanguages.getSystemLanguage(this), R.string.current_language));
 
         if (MultiLanguages.isSystemLanguage(this)) {
             radioGroup.check(R.id.rb_main_language_auto);
@@ -66,6 +69,8 @@ public final class MainActivity extends BaseActivity
                 radioGroup.check(R.id.rb_main_language_tw);
             } else if (LocaleContract.getEnglishLocale().equals(locale)) {
                 radioGroup.check(R.id.rb_main_language_en);
+            } else if (LocaleContract.getArabicLocale().equals(locale)) {
+                radioGroup.check(R.id.rb_main_language_ar);
             } else {
                 radioGroup.check(R.id.rb_main_language_auto);
             }
@@ -94,6 +99,9 @@ public final class MainActivity extends BaseActivity
         } else if (checkedId == R.id.rb_main_language_en) {
             // 英语
             restart = MultiLanguages.setAppLanguage(this, LocaleContract.getEnglishLocale());
+        } else if (checkedId == R.id.rb_main_language_ar) {
+            // 阿拉伯语
+            restart = MultiLanguages.setAppLanguage(this, LocaleContract.getArabicLocale());
         }
 
         if (restart) {
@@ -130,7 +138,7 @@ public final class MainActivity extends BaseActivity
             return;
         }
         mSystemLanguageView.setText(MultiLanguages.getLanguageString(this,
-            MultiLanguages.getSystemLanguage(this), R.string.current_language));
+                MultiLanguages.getSystemLanguage(this), R.string.current_language));
     }
 
     @Override
@@ -188,6 +196,18 @@ public final class MainActivity extends BaseActivity
                     break;
             }
             return true;
+        }
+        @Override
+        public void onPageCommitVisible(WebView view, String url) {
+            super.onPageCommitVisible(view, url);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                Locale locale = MultiLanguages.getAppLanguage(view.getContext());
+                if (View.LAYOUT_DIRECTION_RTL == TextUtils.getLayoutDirectionFromLocale(locale)) {
+                    // 水平滚动条滚动到最右边
+                    view.scrollTo(view.getWidth(), 0);
+                }
+            }
         }
     }
 
