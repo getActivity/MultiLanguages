@@ -3,7 +3,6 @@ package com.hjq.language.demo;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -197,17 +196,20 @@ public final class MainActivity extends BaseActivity
             }
             return true;
         }
+
         @Override
         public void onPageCommitVisible(WebView view, String url) {
             super.onPageCommitVisible(view, url);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                Locale locale = MultiLanguages.getAppLanguage(view.getContext());
-                if (View.LAYOUT_DIRECTION_RTL == TextUtils.getLayoutDirectionFromLocale(locale)) {
-                    // 水平滚动条滚动到最右边
-                    view.scrollTo(view.getWidth(), 0);
-                }
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                return;
             }
+            Locale locale = MultiLanguages.getAppLanguage(view.getContext());
+            if (TextUtils.getLayoutDirectionFromLocale(locale) == View.LAYOUT_DIRECTION_LTR) {
+                return;
+            }
+            // 将水平水平滚动条滚动到最右边，以便更好适配 RTL 特性
+            // Github issue 地址：https://github.com/getActivity/MultiLanguages/pull/62
+            view.scrollTo(view.getWidth(), 0);
         }
     }
 
