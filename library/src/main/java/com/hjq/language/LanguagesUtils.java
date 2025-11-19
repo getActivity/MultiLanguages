@@ -39,16 +39,21 @@ final class LanguagesUtils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             LocaleList localeList = new LocaleList(locale);
             config.setLocales(localeList);
-            // 在一台Android13的联想平板上，setLocales和setLocale均无效，修改config.locale生效，所以这里判断一下是否设置成功
-            if (config.getLocales().get(0) != locale) {
+            // 修复在 Android 13 的联想平板上调用 setLocales 或者 setLocale 修改语种无效的问题
+            // Github issue 地址：https://github.com/getActivity/MultiLanguages/pull/62
+            if (!locale.equals(config.getLocales().get(0))) {
                 config.locale = locale;
             }
-            config.setLayoutDirection(locale);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             config.setLocale(locale);
-            config.setLayoutDirection(locale);
         } else {
             config.locale = locale;
+        }
+
+        // 某些语种（例如：阿拉伯语）默认需支持 RTL 特性，以便符合阿拉伯人的阅读习惯
+        // Github issue 地址：https://github.com/getActivity/MultiLanguages/pull/62
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            config.setLayoutDirection(locale);
         }
     }
 
