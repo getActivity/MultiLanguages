@@ -6,8 +6,8 @@ android {
     defaultConfig {
         // Android 版本适配指南：https://github.com/getActivity/AndroidVersionAdapter
         targetSdk 34
-        versionCode 980
-        versionName "9.8"
+        versionCode 1000
+        versionName "10.8"
     }
 
     // 支持 Java JDK 8
