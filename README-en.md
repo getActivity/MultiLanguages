@@ -105,8 +105,11 @@ MultiLanguages.isSystemLanguage(Context context);
 
 // Compare if two languages are the same (e.g., Simplified and Traditional Chinese, American and British English)
 MultiLanguages.equalsLanguage(Locale locale1, Locale locale2);
-// Compare if two languages are from the same region (e.g., Simplified Chinese in Mainland China, Traditional Chinese in Taiwan)
-MultiLanguages.equalsCountry(Locale locale1, Locale locale2);
+// Compare whether the two languages are of the same language and from the same place (for example: simplified Chinese used in Chinese mainland and traditional Chinese used in Taiwan, China).
+MultiLanguages.equalsLanguageAndCountry(Locale locale1, Locale locale2);
+// Notes: If it is to determine whether two Locale objects are the same, please use the equalsLanguageAndCountry method for judgment instead of the equalsLanguage method
+// Also, please do not use the equals method that comes with the Locale class to make a judgment, as it will compare more information and may lead to a judgment error.
+// Github issue : https://github.com/getActivity/MultiLanguages/issues/63
 
 // Get a String in a specific language
 MultiLanguages.getLanguageString(Context context, Locale locale, int stringId);

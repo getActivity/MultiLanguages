@@ -103,10 +103,13 @@ MultiLanguages.getSystemLanguage(Context context);
 // 是否跟随系统的语种
 MultiLanguages.isSystemLanguage(Context context);
 
-// 对比两个语言是否是同一个语种（比如：中文有简体和繁体，英语有美式和英式）
+// 对比两个语言是否同一个语种（比如：中文有简体和繁体，英语有美式和英式）
 MultiLanguages.equalsLanguage(Locale locale1, Locale locale2);
-// 对比两个语言是否是同一个地方的（比如：中国大陆用的中文简体，中国台湾用的中文繁体）
-MultiLanguages.equalsCountry(Locale locale1, Locale locale2);
+// 对比两个语言是否同一个语种并且同一个地方的（比如：中国大陆用的中文简体，中国台湾用的中文繁体）
+MultiLanguages.equalsLanguageAndCountry(Locale locale1, Locale locale2);
+// 注意事项：如果是为了判断两个 Locale 对象是否相同，请使用 equalsLanguageAndCountry 方法来判断，而不是 equalsLanguage 方法，
+// 另外请不要用 Locale 类中自带的 equals 方法来判断，因为它会比较更多的信息，会导致判断错误。
+// Github 相关问题 issue：https://github.com/getActivity/MultiLanguages/issues/63
 
 // 获取某个语种下的 String
 MultiLanguages.getLanguageString(Context context, Locale locale, int stringId);

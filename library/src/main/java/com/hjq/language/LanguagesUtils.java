@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.LocaleList;
+import android.text.TextUtils;
 import java.util.Locale;
 
 /**
@@ -41,7 +42,7 @@ final class LanguagesUtils {
             config.setLocales(localeList);
             // 修复在 Android 13 的联想平板上调用 setLocales 或者 setLocale 修改语种无效的问题
             // Github issue 地址：https://github.com/getActivity/MultiLanguages/pull/62
-            if (!locale.equals(config.getLocales().get(0))) {
+            if (!equalsLanguageAndCountry(locale, config.getLocales().get(0))) {
                 config.locale = locale;
             }
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -143,5 +144,21 @@ final class LanguagesUtils {
             return context.createConfigurationContext(config).getResources();
         }
         return new Resources(context.getAssets(), context.getResources().getDisplayMetrics(), config);
+    }
+
+    /**
+     * 对比两个语言是否同一个语种（比如：中文有简体和繁体，但是它们都属于同一个语种）
+     */
+    public static boolean equalsLanguage(Locale locale1, Locale locale2) {
+        return TextUtils.equals(locale1.getLanguage(), locale2.getLanguage());
+    }
+
+    /**
+     * 对比两个语言是否同一个语种并且同一个地方的（比如：中国大陆用的中文简体，中国台湾用的中文繁体）
+     */
+    public static boolean equalsLanguageAndCountry(Locale locale1, Locale locale2) {
+        // Github issue 地址：https://github.com/getActivity/MultiLanguages/issues/63
+        return TextUtils.equals(locale1.getLanguage(), locale2.getLanguage()) &&
+            TextUtils.equals(locale1.getCountry(), locale2.getCountry());
     }
 }

@@ -77,7 +77,7 @@ public final class MultiLanguages {
      */
     public static Context attach(Context context) {
         Locale locale = getAppLanguage(context);
-        if (LanguagesUtils.getLocale(context).equals(locale)) {
+        if (equalsLanguageAndCountry(locale, LanguagesUtils.getLocale(context))) {
             return context;
         }
         return LanguagesUtils.attachLanguages(context, locale);
@@ -99,12 +99,12 @@ public final class MultiLanguages {
         }
         Locale locale = getAppLanguage(context);
         Configuration config = resources.getConfiguration();
-        if (!locale.equals(LanguagesUtils.getLocale(config))
+        if (!LanguagesUtils.equalsLanguageAndCountry(locale, LanguagesUtils.getLocale(config))
             || (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1
                 && TextUtils.getLayoutDirectionFromLocale(locale) != config.getLayoutDirection())) {
             LanguagesUtils.updateLanguages(resources, locale);
         }
-        if (!locale.equals(LanguagesUtils.getDefaultLocale())) {
+        if (!LanguagesUtils.equalsLanguageAndCountry(locale, LanguagesUtils.getDefaultLocale())) {
             // Github issue 地址：https://github.com/getActivity/MultiLanguages/issues/59
             LanguagesUtils.setDefaultLocale(context);
         }
@@ -136,7 +136,7 @@ public final class MultiLanguages {
         // 1. 调用此 API 会自动重启 Activity，而框架是将重启操作放到了外层给开发者去重启
         // 2. 上面说了，调用此 API 会重启 Activity，重启也就算了，还顺带闪了一下，这个不能忍
         LanguagesConfig.saveAppLanguageSetting(context, newLocale);
-        if (LanguagesUtils.getLocale(context).equals(newLocale)) {
+        if (LanguagesUtils.equalsLanguageAndCountry(newLocale, LanguagesUtils.getLocale(context))) {
             return false;
         }
 
@@ -177,7 +177,7 @@ public final class MultiLanguages {
      */
     public static boolean clearAppLanguage(Context context) {
         LanguagesConfig.clearLanguageSetting(context);
-        if (LanguagesUtils.getLocale(context).equals(getSystemLanguage(sApplication))) {
+        if (LanguagesUtils.equalsLanguageAndCountry(getSystemLanguage(sApplication), LanguagesUtils.getLocale(context))) {
             return false;
         }
 
@@ -198,18 +198,24 @@ public final class MultiLanguages {
     }
 
     /**
-     * 对比两个语言是否是同一个语种（比如：中文有简体和繁体，但是它们都属于同一个语种）
+     * 对比两个语言是否同一个语种（比如：中文有简体和繁体，但是它们都属于同一个语种）
      */
     public static boolean equalsLanguage(Locale locale1, Locale locale2) {
-        return TextUtils.equals(locale1.getLanguage(), locale2.getLanguage());
+        return LanguagesUtils.equalsLanguage(locale1, locale2);
     }
 
     /**
-     * 对比两个语言是否是同一个地方的（比如：中国大陆用的中文简体，中国台湾用的中文繁体）
+     * @deprecated           该 API 已经过时，随时会被删除，请尽早迁移到 {@link #equalsLanguageAndCountry(Locale, Locale)}
      */
     public static boolean equalsCountry(Locale locale1, Locale locale2) {
-        return equalsLanguage(locale1, locale2) &&
-                TextUtils.equals(locale1.getCountry(), locale2.getCountry());
+        return equalsLanguageAndCountry(locale1, locale2);
+    }
+
+    /**
+     * 对比两个语言是否同一个语种并且同一个地方的（比如：中国大陆用的中文简体，中国台湾用的中文繁体）
+     */
+    public static boolean equalsLanguageAndCountry(Locale locale1, Locale locale2) {
+        return LanguagesUtils.equalsLanguageAndCountry(locale1, locale2);
     }
 
     /**

@@ -51,7 +51,7 @@ final class LocaleChangeReceiver extends BroadcastReceiver {
         }
 
         Locale latestSystemLocale = MultiLanguages.getSystemLanguage(mApplication);
-        if (MultiLanguages.equalsCountry(latestSystemLocale, sSystemLanguage)) {
+        if (MultiLanguages.equalsLanguageAndCountry(latestSystemLocale, sSystemLanguage)) {
             return;
         }
 

@@ -62,13 +62,13 @@ public final class MainActivity extends BaseActivity
             radioGroup.check(R.id.rb_main_language_auto);
         } else {
             Locale locale = MultiLanguages.getAppLanguage(this);
-            if (LocaleContract.getSimplifiedChineseLocale().equals(locale)) {
+            if (MultiLanguages.equalsLanguageAndCountry(locale, LocaleContract.getSimplifiedChineseLocale())) {
                 radioGroup.check(R.id.rb_main_language_cn);
-            } else if (LocaleContract.getTraditionalChineseLocale().equals(locale)) {
+            } else if (MultiLanguages.equalsLanguageAndCountry(locale, LocaleContract.getTraditionalChineseLocale())) {
                 radioGroup.check(R.id.rb_main_language_tw);
-            } else if (LocaleContract.getEnglishLocale().equals(locale)) {
+            } else if (MultiLanguages.equalsLanguageAndCountry(locale, LocaleContract.getEnglishLocale())) {
                 radioGroup.check(R.id.rb_main_language_en);
-            } else if (LocaleContract.getArabicLocale().equals(locale)) {
+            } else if (MultiLanguages.equalsLanguageAndCountry(locale, LocaleContract.getArabicLocale())) {
                 radioGroup.check(R.id.rb_main_language_ar);
             } else {
                 radioGroup.check(R.id.rb_main_language_auto);
