@@ -150,6 +150,9 @@ final class LanguagesUtils {
      * 对比两个语言是否同一个语种（比如：中文有简体和繁体，但是它们都属于同一个语种）
      */
     public static boolean equalsLanguage(Locale locale1, Locale locale2) {
+        if (locale1 == null || locale2 == null) {
+            return false;
+        }
         return TextUtils.equals(locale1.getLanguage(), locale2.getLanguage());
     }
 
@@ -158,6 +161,9 @@ final class LanguagesUtils {
      */
     public static boolean equalsLanguageAndCountry(Locale locale1, Locale locale2) {
         // Github issue 地址：https://github.com/getActivity/MultiLanguages/issues/63
+        if (locale1 == null || locale2 == null) {
+            return false;
+        }
         return TextUtils.equals(locale1.getLanguage(), locale2.getLanguage()) &&
             TextUtils.equals(locale1.getCountry(), locale2.getCountry());
     }
