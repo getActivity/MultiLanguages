@@ -108,8 +108,9 @@ final class LanguagesUtils {
         setLocale(config, locale);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             context = context.createConfigurationContext(config);
+        } else {
+            resources.updateConfiguration(config, resources.getDisplayMetrics());
         }
-        resources.updateConfiguration(config, resources.getDisplayMetrics());
         return context;
     }
 
