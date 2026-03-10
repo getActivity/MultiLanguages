@@ -12,12 +12,18 @@ import android.content.res.Configuration;
  */
 final class ConfigurationObserver implements ComponentCallbacks {
 
+    private static volatile boolean sRegisterFlag = false;
+
     /**
      * 注册系统语种变化监听
      */
     static void register(Application application) {
-        ConfigurationObserver configurationObserver = new ConfigurationObserver(application);
-        application.registerComponentCallbacks(configurationObserver);
+        if (sRegisterFlag) {
+            return;
+        }
+        sRegisterFlag = true;
+
+        application.registerComponentCallbacks(new ConfigurationObserver(application));
     }
 
     private final Application mApplication;
