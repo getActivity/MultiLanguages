@@ -46,10 +46,10 @@ public final class LocaleContract {
    }
 
    /** 新加坡 */
-   private static volatile Locale sSingaporeLocale ;
+   private static volatile Locale sSingaporeLocale;
 
    public static Locale getSingaporeLocale() {
-      if (sSimplifiedChineseLocale == null) {
+      if (sSingaporeLocale == null) {
          sSingaporeLocale = new Locale("zh", "SG");
       }
       return sSingaporeLocale;
@@ -130,7 +130,7 @@ public final class LocaleContract {
 
    public static Locale getDutchLocale() {
       if (sDutchLocale == null) {
-         sDutchLocale = new Locale("af");
+         sDutchLocale = new Locale("nl");
       }
       return sDutchLocale;
    }
