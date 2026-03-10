@@ -41,7 +41,7 @@ public final class LocaleContract {
       return sTraditionalChineseLocale;
    }
 
-   public static Locale getTaiWanLocale() {
+   public static Locale getTaiwanLocale() {
       return getTraditionalChineseLocale();
    }
 
@@ -518,11 +518,11 @@ public final class LocaleContract {
    /** 葡萄牙语 */
    private static volatile Locale sPortugueseLocale;
 
-   public static Locale getPortugalLocale() {
-      if (sPortugueseLocale == null) {
-         sPortugueseLocale = new Locale("pt");
-      }
-      return sPortugueseLocale;
+   public static Locale getPortugueseLocale() {
+       if (sPortugueseLocale == null) {
+           sPortugueseLocale = new Locale("pt");
+       }
+       return sPortugueseLocale;
    }
 
    /** 旁遮普语（印度和巴基斯坦语） */
@@ -588,11 +588,11 @@ public final class LocaleContract {
    /** 西班牙语 */
    private static volatile Locale sSpanishLocale;
 
-   public static Locale getSpainLocale() {
-      if (sSpanishLocale == null) {
-         sSpanishLocale = new Locale("es");
-      }
-      return sSpanishLocale;
+   public static Locale getSpanishLocale() {
+       if (sSpanishLocale == null) {
+           sSpanishLocale = new Locale("es");
+       }
+       return sSpanishLocale;
    }
 
    /** 斯瓦希里语 */
