@@ -15,10 +15,17 @@ import java.util.Locale;
  */
 final class LocaleChangeReceiver extends BroadcastReceiver {
 
+    private static volatile boolean sRegisterFlag = false;
+
     /** 系统语种 */
     private static volatile Locale sSystemLanguage;
 
     static void register(Application application) {
+        if (sRegisterFlag) {
+            return;
+        }
+        sRegisterFlag = true;
+
         sSystemLanguage = LanguagesUtils.getSystemLocale(application);
         IntentFilter filter = new IntentFilter(Intent.ACTION_LOCALE_CHANGED);
         application.registerReceiver(new LocaleChangeReceiver(application), filter);
