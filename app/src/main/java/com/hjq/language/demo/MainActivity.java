@@ -3,11 +3,14 @@ package com.hjq.language.demo;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Insets;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.View.OnApplyWindowInsetsListener;
+import android.view.WindowInsets;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -46,6 +49,21 @@ public final class MainActivity extends BaseActivity
         RadioGroup radioGroup = findViewById(R.id.rg_main_languages);
 
         titleBar.setOnTitleBarListener(this);
+
+        // 适配 Android 15 EdgeToEdge 特性
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+            titleBar.setOnApplyWindowInsetsListener(new OnApplyWindowInsetsListener()  {
+
+                @NonNull
+                @Override
+                public WindowInsets onApplyWindowInsets(@NonNull View v, @NonNull WindowInsets insets) {
+                    Insets systemBars = insets.getInsets(WindowInsets.Type.systemBars());
+                    // v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                    v.setPadding(0, systemBars.top, 0, 0);
+                    return insets;
+                }
+            });
+        }
 
         mWebView.setWebViewClient(new LanguagesViewClient());
         mWebView.setWebChromeClient(new WebChromeClient());
