@@ -3,6 +3,8 @@ package com.hjq.language;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  *    author : Android 轮子哥
@@ -18,122 +20,119 @@ final class ActivityLanguages implements Application.ActivityLifecycleCallbacks 
     Github 地址：https://github.com/getActivity/MultiLanguages/issues/52
      */
 
-    static void inject(Application application) {
+    static void inject(@NonNull Application application) {
         application.registerActivityLifecycleCallbacks(new ActivityLanguages());
     }
 
     @Override
-    public void onActivityPreCreated(Activity activity, Bundle savedInstanceState) {
+    public void onActivityPreCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
         refreshActivityAndApplicationLanguage(activity);
     }
 
     @Override
-    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+    public void onActivityCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
         refreshActivityAndApplicationLanguage(activity);
     }
 
     @Override
-    public void onActivityPostCreated(Activity activity, Bundle savedInstanceState) {
+    public void onActivityPostCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
         refreshActivityAndApplicationLanguage(activity);
     }
 
     @Override
-    public void onActivityPreStarted(Activity activity) {
+    public void onActivityPreStarted(@NonNull Activity activity) {
         refreshActivityAndApplicationLanguage(activity);
     }
 
     @Override
-    public void onActivityStarted(Activity activity) {
+    public void onActivityStarted(@NonNull Activity activity) {
         refreshActivityAndApplicationLanguage(activity);
     }
 
     @Override
-    public void onActivityPostStarted(Activity activity) {
+    public void onActivityPostStarted(@NonNull Activity activity) {
         refreshActivityAndApplicationLanguage(activity);
     }
 
     @Override
-    public void onActivityPreResumed(Activity activity) {
+    public void onActivityPreResumed(@NonNull Activity activity) {
         refreshActivityAndApplicationLanguage(activity);
     }
 
     @Override
-    public void onActivityResumed(Activity activity) {
+    public void onActivityResumed(@NonNull Activity activity) {
         refreshActivityAndApplicationLanguage(activity);
     }
 
     @Override
-    public void onActivityPostResumed(Activity activity) {
+    public void onActivityPostResumed(@NonNull Activity activity) {
         refreshActivityAndApplicationLanguage(activity);
     }
 
     @Override
-    public void onActivityPrePaused(Activity activity) {
+    public void onActivityPrePaused(@NonNull Activity activity) {
         refreshActivityAndApplicationLanguage(activity);
     }
 
     @Override
-    public void onActivityPaused(Activity activity) {
+    public void onActivityPaused(@NonNull Activity activity) {
         refreshActivityAndApplicationLanguage(activity);
     }
 
     @Override
-    public void onActivityPostPaused(Activity activity) {
+    public void onActivityPostPaused(@NonNull Activity activity) {
         refreshActivityAndApplicationLanguage(activity);
     }
 
     @Override
-    public void onActivityPreStopped(Activity activity) {
+    public void onActivityPreStopped(@NonNull Activity activity) {
         refreshActivityAndApplicationLanguage(activity);
     }
 
     @Override
-    public void onActivityStopped(Activity activity) {
+    public void onActivityStopped(@NonNull Activity activity) {
         refreshActivityAndApplicationLanguage(activity);
     }
 
     @Override
-    public void onActivityPostStopped(Activity activity) {
+    public void onActivityPostStopped(@NonNull Activity activity) {
         refreshActivityAndApplicationLanguage(activity);
     }
 
     @Override
-    public void onActivityPreSaveInstanceState(Activity activity, Bundle outState) {
+    public void onActivityPreSaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
         refreshActivityAndApplicationLanguage(activity);
     }
 
     @Override
-    public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+    public void onActivitySaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
         refreshActivityAndApplicationLanguage(activity);
     }
 
     @Override
-    public void onActivityPostSaveInstanceState(Activity activity, Bundle outState) {
+    public void onActivityPostSaveInstanceState(@NonNull Activity activity, @NonNull Bundle outState) {
         refreshActivityAndApplicationLanguage(activity);
     }
 
     @Override
-    public void onActivityPreDestroyed(Activity activity) {
+    public void onActivityPreDestroyed(@NonNull Activity activity) {
         refreshActivityAndApplicationLanguage(activity);
     }
 
     @Override
-    public void onActivityDestroyed(Activity activity) {
+    public void onActivityDestroyed(@NonNull Activity activity) {
         refreshApplicationLanguage(activity.getApplication());
     }
 
     @Override
-    public void onActivityPostDestroyed(Activity activity) {
+    public void onActivityPostDestroyed(@NonNull Activity activity) {
         refreshApplicationLanguage(activity.getApplication());
     }
 
     /**
      * 刷新 Activity 和 Application 的语种
      */
-    private void refreshActivityAndApplicationLanguage(Activity activity) {
-        if (activity == null) {
-            return;
-        }
+    private void refreshActivityAndApplicationLanguage(@NonNull Activity activity) {
         MultiLanguages.updateAppLanguage(activity);
         refreshApplicationLanguage(activity.getApplication());
     }
@@ -141,7 +140,7 @@ final class ActivityLanguages implements Application.ActivityLifecycleCallbacks 
     /**
      * 刷新 Application 的语种
      */
-    private void refreshApplicationLanguage(Application application) {
+    private void refreshApplicationLanguage(@Nullable Application application) {
         if (application == null) {
             return;
         }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.util.Log;
+import androidx.annotation.NonNull;
 import com.hjq.language.MultiLanguages;
 import com.hjq.language.OnLanguageListener;
 import com.hjq.toast.Toaster;
@@ -38,12 +39,12 @@ public final class AppApplication extends Application {
         MultiLanguages.setOnLanguageListener(new OnLanguageListener() {
 
             @Override
-            public void onAppLocaleChange(Locale oldLocale, Locale newLocale) {
+            public void onAppLocaleChange(@NonNull Locale oldLocale, @NonNull Locale newLocale) {
                 Log.i("MultiLanguages", "监听到应用切换了语种，旧语种：" + oldLocale + "，新语种：" + newLocale);
             }
 
             @Override
-            public void onSystemLocaleChange(Locale oldLocale, Locale newLocale) {
+            public void onSystemLocaleChange(@NonNull Locale oldLocale, @NonNull Locale newLocale) {
                 Log.i("MultiLanguages", "监听到系统切换了语种，旧语种：" + oldLocale + "，新语种：" + newLocale +
                         "，是否跟随系统：" + MultiLanguages.isSystemLanguage(AppApplication.this));
 

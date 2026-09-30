@@ -86,43 +86,43 @@ protected void attachBaseContext(Context newBase) {
 
 ```java
 // Set the current language (returns true if the app needs to be restarted)
-MultiLanguages.setAppLanguage(Context context, Locale locale);
+MultiLanguages.setAppLanguage(@Nullable Context context, @Nullable Locale locale);
 
 // Get the current language
-MultiLanguages.getAppLanguage(Context context);
+MultiLanguages.getAppLanguage(@Nullable Context context);
 
 // Follow system language (returns true if the app needs to be restarted)
-MultiLanguages.clearAppLanguage(Context context);
+MultiLanguages.clearAppLanguage(@Nullable Context context);
 ```
 
 #### Other APIs
 
 ```java
 // Get the system language
-MultiLanguages.getSystemLanguage(Context context);
+MultiLanguages.getSystemLanguage(@Nullable Context context);
 // Whether to follow the system language
-MultiLanguages.isSystemLanguage(Context context);
+MultiLanguages.isSystemLanguage(@Nullable Context context);
 
 // Compare if two languages are the same (e.g., Simplified and Traditional Chinese, American and British English)
-MultiLanguages.equalsLanguage(Locale locale1, Locale locale2);
+MultiLanguages.equalsLanguage(@Nullable Locale locale1, @Nullable Locale locale2);
 // Compare whether the two languages are of the same language and from the same place (for example: simplified Chinese used in Chinese mainland and traditional Chinese used in Taiwan, China).
-MultiLanguages.equalsLanguageAndCountry(Locale locale1, Locale locale2);
+MultiLanguages.equalsLanguageAndCountry(@Nullable Locale locale1, @Nullable Locale locale2);
 // Notes: If it is to determine whether two Locale objects are the same, please use the equalsLanguageAndCountry method for judgment instead of the equalsLanguage method
 // Also, please do not use the equals method that comes with the Locale class to make a judgment, as it will compare more information and may lead to a judgment error.
 // Github issue : https://github.com/getActivity/MultiLanguages/issues/63
 
 // Get a String in a specific language
-MultiLanguages.getLanguageString(Context context, Locale locale, int stringId);
+MultiLanguages.getLanguageString(@Nullable Context context, @Nullable Locale locale, @StringRes int stringId);
 // Generate a Resources object for a specific language
-MultiLanguages.generateLanguageResources(Context context, Locale locale);
+MultiLanguages.generateLanguageResources(@Nullable Context context, @Nullable Locale locale);
 
 // Update the language of Context
-MultiLanguages.updateAppLanguage(Context context);
+MultiLanguages.updateAppLanguage(@Nullable Context context);
 // Update the language of Resources
-MultiLanguages.updateAppLanguage(Resources resources);
+MultiLanguages.updateAppLanguage(@Nullable Context context, @Nullable Resources resources);
 
 // Set the default language (the earlier, the better)
-MultiLanguages.setDefaultLanguage(Locale locale);
+MultiLanguages.setDefaultLanguage(@Nullable Locale locale);
 ```
 
 #### Language Change Listener
@@ -132,12 +132,12 @@ MultiLanguages.setDefaultLanguage(Locale locale);
 MultiLanguages.setOnLanguageListener(new OnLanguageListener() {
 
     @Override
-    public void onAppLocaleChange(Locale oldLocale, Locale newLocale) {
+    public void onAppLocaleChange(@NonNull Locale oldLocale, @NonNull Locale newLocale) {
         Log.d("MultiLanguages", "Detected app language change, old language: " + oldLocale + ", new language: " + newLocale);
     }
 
     @Override
-    public void onSystemLocaleChange(Locale oldLocale, Locale newLocale) {
+    public void onSystemLocaleChange(@NonNull Locale oldLocale, @NonNull Locale newLocale) {
         Log.d("MultiLanguages", "Detected system language change, old language: " + oldLocale + ", new language: " + newLocale + ", following system: " + MultiLanguages.isSystemLanguage());
     }
 });

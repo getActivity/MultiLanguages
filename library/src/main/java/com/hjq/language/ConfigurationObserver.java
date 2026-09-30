@@ -3,6 +3,7 @@ package com.hjq.language;
 import android.app.Application;
 import android.content.ComponentCallbacks;
 import android.content.res.Configuration;
+import androidx.annotation.NonNull;
 
 /**
  *    author : Android 轮子哥
@@ -17,7 +18,7 @@ final class ConfigurationObserver implements ComponentCallbacks {
     /**
      * 注册系统语种变化监听
      */
-    static void register(Application application) {
+    static void register(@NonNull Application application) {
         if (sRegisterFlag) {
             return;
         }
@@ -26,9 +27,10 @@ final class ConfigurationObserver implements ComponentCallbacks {
         application.registerComponentCallbacks(new ConfigurationObserver(application));
     }
 
+    @NonNull
     private final Application mApplication;
 
-    private ConfigurationObserver(Application application) {
+    private ConfigurationObserver(@NonNull Application application) {
         mApplication = application;
     }
 
@@ -36,18 +38,18 @@ final class ConfigurationObserver implements ComponentCallbacks {
      * 手机的配置发生了变化
      */
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        if (newConfig == null) {
-            return;
-        }
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        final Application application = mApplication;
         // 如果当前是跟随系统语种，就则不往下执行
-        if (MultiLanguages.isSystemLanguage(mApplication)) {
+        if (MultiLanguages.isSystemLanguage(application)) {
             return;
         }
         // 更新 Application 的配置，否则会出现横竖屏切换之后 Application 的 orientation 没有随之变化的问题
-        LanguagesUtils.updateConfigurationChanged(mApplication, newConfig, MultiLanguages.getAppLanguage(mApplication));
+        LanguagesUtils.updateConfigurationChanged(application, newConfig, MultiLanguages.getAppLanguage(application));
     }
 
     @Override
-    public void onLowMemory() {}
+    public void onLowMemory() {
+        // default implementation ignored
+    }
 }

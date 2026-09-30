@@ -1,5 +1,6 @@
 package com.hjq.language;
 
+import androidx.annotation.NonNull;
 import java.util.Locale;
 
 /**
@@ -16,7 +17,7 @@ public interface OnLanguageListener {
      * @param oldLocale         旧语种
      * @param newLocale         新语种
      */
-    void onAppLocaleChange(Locale oldLocale, Locale newLocale);
+    void onAppLocaleChange(@NonNull Locale oldLocale, @NonNull Locale newLocale);
 
     /**
      * 手机系统语种发生变化时回调
@@ -24,5 +25,5 @@ public interface OnLanguageListener {
      * @param oldLocale         旧语种
      * @param newLocale         新语种
      */
-    void onSystemLocaleChange(Locale oldLocale, Locale newLocale);
+    void onSystemLocaleChange(@NonNull Locale oldLocale, @NonNull Locale newLocale);
 }

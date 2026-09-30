@@ -7,6 +7,8 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.LocaleList;
 import android.text.TextUtils;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import java.util.Locale;
 
 /**
@@ -21,13 +23,26 @@ final class LanguagesUtils {
     /**
      * 获取语种对象
      */
-    static Locale getLocale(Context context) {
-        return getLocale(context.getResources().getConfiguration());
+    @Nullable
+    static Locale getLocale(@NonNull Context context) {
+        Resources resources = context.getResources();
+        if (resources == null) {
+            return null;
+        }
+        return getLocale(resources.getConfiguration());
     }
 
-    static Locale getLocale(Configuration config) {
+    @Nullable
+    static Locale getLocale(@Nullable Configuration config) {
+        if (config == null) {
+            return null;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return config.getLocales().get(0);
+            LocaleList locales = config.getLocales();
+            if (locales.isEmpty()) {
+                return null;
+            }
+            return locales.get(0);
         } else  {
             return config.locale;
         }
@@ -36,7 +51,10 @@ final class LanguagesUtils {
     /**
      * 设置语种对象
      */
-    static void setLocale(Configuration config, Locale locale) {
+    static void setLocale(@Nullable Configuration config, @Nullable Locale locale) {
+        if (config == null || locale == null) {
+            return;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             LocaleList localeList = new LocaleList(locale);
             config.setLocales(localeList);
@@ -61,7 +79,8 @@ final class LanguagesUtils {
     /**
      * 获取系统的语种对象
      */
-    static Locale getSystemLocale(Context context) {
+    @Nullable
+    static Locale getSystemLocale(@NonNull Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             // 在 Android 13 上，不能用 Resources.getSystem() 来获取系统语种了
             // Android 13 上面新增了一个 LocaleManager 的语种管理类
@@ -69,19 +88,32 @@ final class LanguagesUtils {
             // 所以应该得用 LocaleManager.getSystemLocales 来获取会比较精准
             LocaleManager localeManager = context.getSystemService(LocaleManager.class);
             if (localeManager != null) {
-                return localeManager.getSystemLocales().get(0);
+                LocaleList systemLocales = localeManager.getSystemLocales();
+                if (systemLocales.isEmpty()) {
+                    return null;
+                }
+                return systemLocales.get(0);
             }
         }
 
-        return LanguagesUtils.getLocale(Resources.getSystem().getConfiguration());
+        Resources systemResources = Resources.getSystem();
+        if (systemResources == null) {
+            return null;
+        }
+        return LanguagesUtils.getLocale(systemResources.getConfiguration());
     }
 
     /**
      * 获取默认的语种环境
      */
+    @Nullable
     static Locale getDefaultLocale() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return LocaleList.getDefault().get(0);
+            LocaleList localeList = LocaleList.getDefault();
+            if (localeList.isEmpty()) {
+                return null;
+            }
+            return localeList.get(0);
         } else {
             return Locale.getDefault();
         }
@@ -90,20 +122,36 @@ final class LanguagesUtils {
     /**
      * 设置默认的语种环境（日期格式化会用到）
      */
-    static void setDefaultLocale(Context context) {
-        Configuration configuration = context.getResources().getConfiguration();
+    static void setDefaultLocale(@Nullable Context context) {
+        if (context == null) {
+            return;
+        }
+        Resources resources = context.getResources();
+        if (resources == null) {
+            return;
+        }
+        Configuration config = resources.getConfiguration();
+        if (config == null) {
+            return;
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            LocaleList.setDefault(configuration.getLocales());
+            LocaleList.setDefault(config.getLocales());
         } else {
-            Locale.setDefault(configuration.locale);
+            Locale.setDefault(config.locale);
         }
     }
 
     /**
      * 绑定当前 App 的语种
      */
-    static Context attachLanguages(Context context, Locale locale) {
+    static Context attachLanguages(@Nullable Context context, @Nullable Locale locale) {
+        if (context == null) {
+            return context;
+        }
         Resources resources = context.getResources();
+        if (resources == null) {
+            return context;
+        }
         Configuration config = new Configuration(resources.getConfiguration());
         setLocale(config, locale);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -117,8 +165,14 @@ final class LanguagesUtils {
     /**
      * 更新 Resources 语种
      */
-    static void updateLanguages(Resources resources, Locale locale) {
+    static void updateLanguages(@Nullable Resources resources, @Nullable Locale locale) {
+        if (resources == null || locale == null) {
+            return;
+        }
         Configuration config = resources.getConfiguration();
+        if (config == null) {
+            return;
+        }
         setLocale(config, locale);
         resources.updateConfiguration(config, resources.getDisplayMetrics());
     }
@@ -126,7 +180,10 @@ final class LanguagesUtils {
     /**
      * 更新手机配置信息变化
      */
-    static void updateConfigurationChanged(Context context, Configuration newConfig, Locale appLanguage) {
+    static void updateConfigurationChanged(@Nullable Context context, @Nullable Configuration newConfig, @Nullable Locale appLanguage) {
+        if (context == null || newConfig == null || appLanguage == null) {
+            return;
+        }
         Configuration config = new Configuration(newConfig);
         // 绑定当前语种到这个新的配置对象中
         setLocale(config, appLanguage);
@@ -138,7 +195,11 @@ final class LanguagesUtils {
     /**
      * 生成某个语种下的 Resources 对象
      */
-    static Resources generateLanguageResources(Context context, Locale locale) {
+    @Nullable
+    static Resources generateLanguageResources(@Nullable Context context, @Nullable Locale locale) {
+        if (context == null || locale == null) {
+            return null;
+        }
         Configuration config = new Configuration();
         setLocale(config, locale);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -150,7 +211,7 @@ final class LanguagesUtils {
     /**
      * 对比两个语言是否同一个语种（比如：中文有简体和繁体，但是它们都属于同一个语种）
      */
-    public static boolean equalsLanguage(Locale locale1, Locale locale2) {
+    public static boolean equalsLanguage(@Nullable Locale locale1, @Nullable Locale locale2) {
         if (locale1 == null || locale2 == null) {
             return false;
         }
@@ -160,7 +221,7 @@ final class LanguagesUtils {
     /**
      * 对比两个语言是否同一个语种并且同一个地方的（比如：中国大陆用的中文简体，中国台湾用的中文繁体）
      */
-    public static boolean equalsLanguageAndCountry(Locale locale1, Locale locale2) {
+    public static boolean equalsLanguageAndCountry(@Nullable Locale locale1, @Nullable Locale locale2) {
         // Github issue 地址：https://github.com/getActivity/MultiLanguages/issues/63
         if (locale1 == null || locale2 == null) {
             return false;
