@@ -146,7 +146,7 @@ final class LanguagesUtils {
      */
     static Context attachLanguages(@Nullable Context context, @Nullable Locale locale) {
         if (context == null) {
-            return context;
+            return null;
         }
         Resources resources = context.getResources();
         if (resources == null) {
