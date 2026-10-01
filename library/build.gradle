@@ -17,13 +17,6 @@ android {
             packageLib.exclude 'R.txt'
         }
     }
-
-    android.libraryVariants.configureEach { variant ->
-        // aar 输出文件名配置
-        variant.outputs.configureEach { output ->
-            outputFileName = "${rootProject.name}-${android.defaultConfig.versionName}.aar"
-        }
-    }
 }
 
 dependencies {
