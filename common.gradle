@@ -6,8 +6,8 @@ android {
     defaultConfig {
         // Android 版本适配指南：https://github.com/getActivity/AndroidVersionAdapter
         targetSdk 37
-        versionCode 1020
-        versionName "10.2"
+        versionCode 1050
+        versionName "10.5"
     }
 
     // 支持 Java JDK 8
